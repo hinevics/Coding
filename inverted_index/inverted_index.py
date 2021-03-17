@@ -1,6 +1,5 @@
-import pandas as pd
 import json
-from collections import defaultdict
+# from collections import defaultdict
 
 work_links = {
     'dataset': r'D:\Development\Coding\Coding\Data\wikipedia_sample',
