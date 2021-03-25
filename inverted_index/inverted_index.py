@@ -16,7 +16,7 @@ class InvertedIndex:
             word: doc_ids for word, doc_ids in word_to_docs_mapping.items()}
 
     def query(self, words):
-        raise NotImplementedError
+        return {word: self.word_to_docs_mapping[word] for word in words}
 
     def dump(self, filepath):
         # преобразую set в list для записи в json
@@ -47,8 +47,8 @@ class InvertedIndex:
     @classmethod
     def load(cls, filepath):
         # считывем с диска
-        with open(file=filepath, mode='r') as file:
-            return {index: set(words) for index, words in json.load(fp=file).items()}
+        with open(file=filepath, mode='r', encoding='utf-8') as file:
+            return InvertedIndex({index: set(words) for index, words in json.load(fp=file).items()})
 
 
 def load_documents(filepath):
@@ -85,12 +85,10 @@ def build_inverted_index(indexs, words, stop_words):
 def main():
     indexs, words = load_documents(work_links['dataset'])
     stop_words = load_stop_words(work_links['stop_words'])
-    inverted_index = build_inverted_index(indexs=indexs, words=words, stop_words=stop_words)
-    inverted_index.dump("inverted.index")  # json записывается на диск
-    inverted_index = InvertedIndex.load("inverted.index")
-    # print(inverted_index['diggers'])
-
-    # document_ids = inverted_index.query(["two", "words"])
+    inverted_index1 = build_inverted_index(indexs=indexs, words=words, stop_words=stop_words)
+    inverted_index1.dump("inverted.index")  # json записывается на диск
+    inverted_index2 = InvertedIndex.load("inverted.index")
+    document_ids = inverted_index2.query(["two", "words"])
 
 
 if __name__ == "__main__":
