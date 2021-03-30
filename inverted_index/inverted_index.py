@@ -16,7 +16,8 @@ class InvertedIndex:
             word: doc_ids for word, doc_ids in word_to_docs_mapping.items()}
 
     def query(self, words):
-        return {word: self.word_to_docs_mapping[word] for word in words}
+        return {word: self.word_to_docs_mapping[word] if word in self.word_to_docs_mapping else {}
+                for word in words}
 
     def dump(self, filepath):
         # преобразую set в list для записи в json
@@ -53,14 +54,13 @@ class InvertedIndex:
 
 def load_documents(filepath):
     with open(file=filepath, encoding='utf-8') as file:
-        documents = set(sub(r'[\.\,\!\?]', '', file.read()).split('\n'))
-        documents.discard('')
+        documents = [i for i in sub(r'[\.\,\!\?]', '', file.read()).split('\n') if i !='']
     index, words = [], []
     for document in map(lambda x: x.split('\t'), documents):
         # через map разбиваю документ (ввиде целой стороки разеделнной пробелами) на список символов
         # 0 это индекс назавания статьи и index'a документа
         index.append(int(document[0]) if document[0] != '' else [])
-        words.append(set([i.lower() for i in document[1].split(' ') if i.isalpha()]) if document[0] != '' else {})
+        words.append(set([i.lower() for i in document[1].split(' ') if i.isalpha()]))
     return index, words
 
 
