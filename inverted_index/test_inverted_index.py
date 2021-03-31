@@ -139,7 +139,89 @@ def test_build_inverted_index11():
 """
 
 
-def test_class_invertedindex_and_build_inverted_index_12(tmp_path):
+def test_build_inverted_index_not_core_data_12():
+    """
+        Как отработает build_inverted_index на данные с отстуствием индекса
+    :return:
+    """
+    test_indexs = [None]
+    test_words = [{'name', 'begin', 'where', 'test', 'work', 'he', 'i'}]
+    test_stop_words = {'he', 'i'}
+
+    test_inverted_index = inverted_index.build_inverted_index(indexs=test_indexs,
+                                                              words=test_words,
+                                                              stop_words=test_stop_words)
+
+    etalon = {
+        'name': {None},
+        'begin': {None},
+        'where': {None},
+        'test': {None},
+        'work': {None}
+    }
+    assert test_inverted_index.word_to_docs_mapping == etalon
+
+
+@pytest.fixture
+def build_inverted_index_for_creat_data_not_corect(tmpdir):
+    test_doc = tmpdir.join('wiki_doc')
+    test_doc.write('\tName Shasha train this program and work with data like!\n'
+                   '4\tTest name number two and test, i like programming!')
+
+    test_doc_stop_words = tmpdir.join('stop_words.txt')
+    test_doc_stop_words.write('and\ni\n')
+
+    result_load_doc  = inverted_index.load_documents(filepath=test_doc)
+    result_load_stop_words = inverted_index.load_stop_words(filepath=test_doc_stop_words)
+
+    result_inverted_index_build_inverted_index = inverted_index.build_inverted_index(stop_words=result_load_stop_words,
+                                                                                     words=result_load_doc[1],
+                                                                                     indexs=result_load_doc[0])
+    return result_inverted_index_build_inverted_index
+
+
+def test_build_inverted_index_not_core_data_13(build_inverted_index_for_creat_data_not_corect):
+    etalon = {
+        'name': {None, 4},
+        'shasha': {None},
+        'train': {None},
+        'this': {None},
+        'program': {None},
+        'work': {None},
+        'with': {None},
+        'data': {None},
+        'test': {4},
+        'number': {4},
+        'two': {4},
+        'like': {None, 4},
+        'programming': {4}
+    }
+    assert etalon == build_inverted_index_for_creat_data_not_corect.word_to_docs_mapping
+
+
+def test_dump_load_inverted_index_not_corect_data_14(build_inverted_index_for_creat_data_not_corect, tmp_path):
+    temp_path = tmp_path / 'tmp'
+    build_inverted_index_for_creat_data_not_corect.dump(filepath=temp_path)
+    test_load_inverted_index = inverted_index.InvertedIndex.load(filepath=temp_path)
+    etalon = {
+        'name': {None, 4},
+        'shasha': {None},
+        'train': {None},
+        'this': {None},
+        'program': {None},
+        'work': {None},
+        'with': {None},
+        'data': {None},
+        'test': {4},
+        'number': {4},
+        'two': {4},
+        'like': {None, 4},
+        'programming': {4}
+    }
+    assert etalon == test_load_inverted_index.word_to_docs_mapping
+
+
+def test_class_invertedindex_and_build_inverted_index_15(tmp_path):
     """
         Как работает build_inverted_index, запись в файл InvertedIndex.dump и считывание InvertedIndex.load
         :param tmp_path: создаю файл во временной директории, для записи тестируемого документа
@@ -162,7 +244,7 @@ def test_class_invertedindex_and_build_inverted_index_12(tmp_path):
     }
 
 
-def test_class_invertedindex_build_inverted_index_and_dump_load_15(tmp_path):
+def test_class_invertedindex_build_inverted_index_and_dump_load_16(tmp_path):
     """
         Проверка работы записи и перезаписи файла с инвертированным индексом
         :param tmp_path: создаю файл во временной директории, для записи тестируемого документа
@@ -193,7 +275,7 @@ def test_class_invertedindex_build_inverted_index_and_dump_load_15(tmp_path):
     }
 
 
-def test_class_invertedindex_load_out_indices_16(tmp_path):
+def test_class_invertedindex_load_out_indices_17(tmp_path):
     """
         Считывание инверт индекса из файла
         :param tmp_path: феременная директория для файла test_index_inverted.index
@@ -220,7 +302,7 @@ def test_class_invertedindex_load_out_indices_16(tmp_path):
     assert etalon == inverted_index_load.word_to_docs_mapping
 
 
-def test_class_invertedindex_query_17():
+def test_class_invertedindex_query_18():
     """
         Как производится посик слова InvertedIndex.query и вывод результата
     """
@@ -237,7 +319,7 @@ def test_class_invertedindex_query_17():
     assert test_query == etalon
 
 
-def test_class_invertedindex_query_with_two_words_18():
+def test_class_invertedindex_query_with_two_words_19():
     """
         Поиск двух одинаовых слов в методе InvertedIndex.query
     """
@@ -253,8 +335,8 @@ def test_class_invertedindex_query_with_two_words_18():
     assert test_query == etalon
 
 
-# @pytest.mark.skip(reason='not implemented test 19')
-def test_class_inverted_index_query_if_not_word_19(tmp_path):
+# @pytest.mark.skip(reason='not implemented test 20')
+def test_class_inverted_index_query_if_not_word_20(tmp_path):
     """
         Тест направлен на проверку отработки случая отсутствия слова в наборе всех слов
         :param tmp_path: временная директория
@@ -276,7 +358,7 @@ def test_class_inverted_index_query_if_not_word_19(tmp_path):
     assert test_query == etalon
 
 
-def test_class_invertedindex_query_work_with_loaded_index_20(tmp_path):
+def test_class_invertedindex_query_work_with_loaded_index_21(tmp_path):
     """
         Поиск слова и индексов этого слова из загруженого инверт индекса
         :param tmp_path: временная директория
@@ -301,7 +383,7 @@ def test_class_invertedindex_query_work_with_loaded_index_20(tmp_path):
     assert test_query == etalon
 
 
-def test_all_21(tmp_path, tmpdir):
+def test_all_22(tmp_path, tmpdir):
     """
         Общий тест функционала: обратока документов, создание инверт индеса, запись его и считывание. Поиск слова
         :param tmp_path: временная диретория
@@ -339,7 +421,7 @@ def fixture_inverted_index(tmp_path):
     return test_result
 
 
-def test_class_invertedindex_query_17_with_fixture_22(fixture_inverted_index):
+def test_class_invertedindex_query_with_fixture_23(fixture_inverted_index):
     test_query = fixture_inverted_index.query(['two', 'test'])
     etalon = {
         'two': {3},
@@ -347,16 +429,16 @@ def test_class_invertedindex_query_17_with_fixture_22(fixture_inverted_index):
     assert test_query == etalon
 
 
-def test_class_invertedindex_query_with_two_words_18_with_fixture_23(fixture_inverted_index):
+def test_class_invertedindex_query_with_two_words_with_fixture_24(fixture_inverted_index):
     test_query = fixture_inverted_index.query(['two', 'two'])
     etalon = {
-            'two': {3}
-        }
+        'two': {3}
+    }
     assert test_query == etalon
 
 
 # Что делать с документом у которого нет индекса ?
-def test_doc_do_not_contaon_index(tmpdir):
+def test_doc_do_not_contaon_index_25(tmpdir):
     """
         Тест для отработки ситуации если документ не содержит индеса
         :param tmpdir: временная директория для тестового файла
@@ -364,12 +446,204 @@ def test_doc_do_not_contaon_index(tmpdir):
     test_doc = tmpdir.join('test_wiki_doc.txt')
     test_doc.write('\tName Doc this test doc. I will use this text for the test.')
     test_indexs, test_words = inverted_index.load_documents(test_doc)
-    etalon_index = [[]]  # вместо индеса должна прийти пустая список
+    etalon_index = [None]  # вместо индеса должна прийти пустая список
     # создается множество слов
     etalon_words = [{'name', 'doc', 'this', 'test', 'i', 'will', 'use', 'text', 'for', 'the'}]
     assert test_indexs == etalon_index
     assert etalon_words == test_words
 
-
 # Добавить тесты, которые обрабатываеют результаты некоректных данных, которые передаюется далее по программе:
 # что будет делать build_inverted_index, если не будет номера документа и тд...
+
+
+@pytest.fixture
+def creat_not_corect_data(tmpdir):
+    not_corect_data = '4\tI sit by the window and make a program test\n' \
+                      '\tSasha ate porridge, a little, but it was delicious test\n' \
+                      '5\tThe third test is about something\n' \
+                      '\tI am watching south park now, test'
+    test_doc = tmpdir.join('wiki_file')
+    test_doc.write(not_corect_data)
+    stop_words = 'the\ni\na\nate\nby\nand\nbut\nit\nis\nam\n'
+
+    test_stop_words = tmpdir.join('stop_words')
+    test_stop_words.write(stop_words)
+
+    result_stop_words = inverted_index.load_stop_words(test_stop_words)
+    result_index, result_words = inverted_index.load_documents(test_doc)
+    return result_index, result_words, result_stop_words
+
+
+def test_not_number_doc_where_lot_documents_26(creat_not_corect_data):
+    indexs, words, stop_words = creat_not_corect_data
+
+    test_inverted_index = inverted_index.build_inverted_index(indexs=indexs,
+                                                              words=words,
+                                                              stop_words=stop_words).word_to_docs_mapping
+
+    etelon = {
+        'sit': {4},
+        'window': {4},
+        'make': {4},
+        'program': {4},
+        'sasha': {None},
+        'porridge': {None},
+        'little': {None},
+        'was': {None},
+        'delicious': {None},
+        'third': {5},
+        'test': {None, 5, 4},
+        'about': {5},
+        'something': {5},
+        'watching': {None},
+        'south': {None},
+        'park': {None},
+        'now': {None}
+    }
+    assert etelon == test_inverted_index
+
+
+def test_not_number_doc_where_lot_documents_with_two_doc_have_not_number_27(creat_not_corect_data, tmp_path):
+    tile_path = tmp_path / 'tmp'
+
+    indexs, words, stop_words = creat_not_corect_data
+
+    test_inverted_index = inverted_index.build_inverted_index(indexs=indexs,
+                                                              words=words,
+                                                              stop_words=stop_words)
+
+    test_inverted_index.dump(filepath=tile_path)
+    load_test_inverted_index = inverted_index.InvertedIndex.load(tile_path)
+    etelon = {
+        'sit': {4},
+        'window': {4},
+        'make': {4},
+        'program': {4},
+        'sasha': {None},
+        'porridge': {None},
+        'little': {None},
+        'was': {None},
+        'delicious': {None},
+        'third': {5},
+        'test': {None, 5, 4},
+        'about': {5},
+        'something': {5},
+        'watching': {None},
+        'south': {None},
+        'park': {None},
+        'now': {None}
+    }
+    assert etelon == load_test_inverted_index.word_to_docs_mapping
+
+
+def test_query_not_number_doc_where_lot_documents_with_two_doc_have_not_number_28(creat_not_corect_data, tmp_path):
+    tile_path = tmp_path / 'tmp'
+
+    indexs, words, stop_words = creat_not_corect_data
+
+    test_inverted_index = inverted_index.build_inverted_index(indexs=indexs,
+                                                              words=words,
+                                                              stop_words=stop_words)
+
+    test_inverted_index.dump(filepath=tile_path)
+    load_test_inverted_index = inverted_index.InvertedIndex.load(tile_path)
+    result_query = load_test_inverted_index.query(['south'])
+    assert result_query == {'south': {None}}
+
+
+@pytest.fixture
+def creat_doc_have_not_words(tmpdir):
+    not_corect_data = '4\tI sit by the window and make a program test\n' \
+                      '8\t\n' \
+                      '5\tThe third test is about something\n' \
+                      '6\tI am watching south park now, test'
+
+    test_file = tmpdir.join('wiki_file')
+    test_file.write(not_corect_data)
+
+    return inverted_index.load_documents(test_file)
+
+
+# @pytest.mark.skip(reason='not implemented test 20')
+def test_number_and_no_words_in_document_27(creat_doc_have_not_words):
+    indexs, words = creat_doc_have_not_words
+    etalon_indexs = [4, 8, 5, 6]
+    etalon_words = [{'i', 'sit', 'by', 'the', 'window', 'and', 'make', 'a', 'program', 'test'},
+                    None,
+                    {'the', 'third', 'test', 'is', 'about', 'something'},
+                    {'i', 'am', 'watching', 'south', 'park', 'now', 'test'}]
+    assert etalon_words == words
+    assert etalon_indexs == indexs
+
+
+# @pytest.mark.skip(reason='not implemented test 28')
+def test_number_and_no_words_in_document_28(creat_doc_have_not_words):
+    indexs, words = creat_doc_have_not_words
+    stop_words = {'i', 'a', 'am', 'is', 'by', 'and','the'}
+    test_inverted_index = inverted_index.build_inverted_index(indexs=indexs, words=words, stop_words=stop_words)
+    etalon = {
+        'sit': {4},
+        'window': {4},
+        'make': {4},
+        'program': {4},
+        'test': {4, 5, 6},
+        'third': {5},
+        'about': {5},
+        'something': {5},
+        'watching': {6},
+        'south': {6},
+        'park': {6},
+        'now': {6}
+    }
+    assert etalon == test_inverted_index.word_to_docs_mapping
+
+
+@pytest.fixture
+def create_not_corect_data_with_two_doc_have_one_ndex(tmpdir):
+    not_corect_data = '4\tI sit by the window and make a program test\n' \
+                      '8\t\n' \
+                      '5\tThe third test is about something\n' \
+                      '6\tI am watching south park now, test\n' \
+                      '8\tTest number tree'
+
+    test_file = tmpdir.join('wiki_file')
+    test_file.write(not_corect_data)
+    return test_file
+
+
+def test_number_and_no_words_in_document_29(create_not_corect_data_with_two_doc_have_one_ndex):
+    test_file = create_not_corect_data_with_two_doc_have_one_ndex
+    indexs, words = inverted_index.load_documents(test_file)
+    etalon_indexs = [4, 8, 5, 6, 8]
+    etalon_words = [{'i', 'sit', 'by', 'the', 'window', 'and', 'make', 'a', 'program', 'test'},
+                    None,
+                    {'the', 'third', 'test', 'is', 'about', 'something'},
+                    {'i', 'am', 'watching', 'south', 'park', 'now', 'test'},
+                    {'test', 'number', 'tree'}]
+    assert etalon_words == words
+    assert etalon_indexs == indexs
+
+
+def test_build_inverted_one_doc_have_doc_with_dont_new_index_30(create_not_corect_data_with_two_doc_have_one_ndex):
+    test_file = create_not_corect_data_with_two_doc_have_one_ndex
+    indexs, words = inverted_index.load_documents(test_file)
+    stop_words = {'i', 'a', 'am', 'is', 'by', 'and', 'the'}
+
+    test_inverted_idex = inverted_index.build_inverted_index(stop_words=stop_words, indexs=indexs, words=words)
+    etalan = {
+        'test': {4, 5, 8, 6},
+        'sit': {4},
+        'window': {4},
+        'make': {4},
+        'program': {4},
+        'third': {5},
+        'about': {5},
+        'something': {5},
+        'number': {8},
+        'tree': {8},
+        'now': {6},
+        'south': {6},
+        'watching': {6},
+        'park': {6}
+    }
+    assert etalan == test_inverted_idex.word_to_docs_mapping

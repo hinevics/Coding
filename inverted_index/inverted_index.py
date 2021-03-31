@@ -54,13 +54,13 @@ class InvertedIndex:
 
 def load_documents(filepath):
     with open(file=filepath, encoding='utf-8') as file:
-        documents = [i for i in sub(r'[\.\,\!\?]', '', file.read()).split('\n') if i !='']
+        documents = [i for i in sub(r'[\.\,\!\?]', '', file.read()).split('\n') if i != '']
     index, words = [], []
     for document in map(lambda x: x.split('\t'), documents):
         # через map разбиваю документ (ввиде целой стороки разеделнной пробелами) на список символов
         # 0 это индекс назавания статьи и index'a документа
-        index.append(int(document[0]) if document[0] != '' else [])
-        words.append(set([i.lower() for i in document[1].split(' ') if i.isalpha()]))
+        index.append(int(document[0]) if document[0] != '' else None)
+        words.append(set([i.lower() for i in document[1].split(' ') if i.isalpha()]) if document[1] != '' else None)
     return index, words
 
 
@@ -73,12 +73,13 @@ def load_stop_words(filepath):
 def build_inverted_index(indexs, words, stop_words):
     inverted_index = dict()
     for word, index in zip(words, indexs):
-        word.difference_update(stop_words)
-        for w in word:
-            if not (w in inverted_index.keys()):
-                inverted_index[w] = {index}
-            else:
-                inverted_index[w].update({index})
+        if not (word is None):
+            word.difference_update(stop_words)
+            for w in word:
+                if not (w in inverted_index.keys()):
+                    inverted_index[w] = {index}
+                else:
+                    inverted_index[w].update({index})
     return InvertedIndex(inverted_index)
 
 

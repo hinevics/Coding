@@ -35,7 +35,7 @@
     <session id="-898561135">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="13" />
+          <entry key="project.closed" value="14" />
           <entry key="project.open.time.0" value="1" />
           <entry key="project.open.time.13" value="1" />
           <entry key="project.open.time.17" value="3" />
@@ -44,22 +44,23 @@
           <entry key="project.open.time.24" value="1" />
           <entry key="project.open.time.27" value="1" />
           <entry key="project.open.time.28" value="1" />
+          <entry key="project.open.time.33" value="1" />
           <entry key="project.open.time.37" value="1" />
           <entry key="project.open.time.38" value="1" />
           <entry key="project.open.time.47" value="1" />
           <entry key="project.open.time.6" value="1" />
-          <entry key="project.opened" value="16" />
+          <entry key="project.opened" value="17" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
           <entry key="Python Console" value="11" />
-          <entry key="py" value="11365" />
+          <entry key="py" value="15158" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="Python" value="11376" />
+          <entry key="Python" value="15169" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
@@ -79,18 +80,18 @@
     </session>
   </component>
   <component name="FileEditorManager">
-    <splitter split-orientation="horizontal" split-proportion="0.16391276">
+    <splitter split-orientation="horizontal" split-proportion="0.24058163">
       <split-first>
         <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
           <file pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/inverted_index.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="574">
-                  <caret line="72" column="24" selection-start-line="72" selection-start-column="4" selection-end-line="72" selection-end-column="24" />
+                <state relative-caret-position="197">
+                  <caret line="61" selection-start-line="61" selection-end-line="61" />
                   <folding>
                     <element signature="e#0#11#0" expanded="true" />
-                    <marker date="1617134195206" expanded="true" signature="482:622" ph="..." />
-                    <marker date="1617134195206" expanded="true" signature="647:656" ph="..." />
+                    <marker date="1617204427617" expanded="true" signature="482:622" ph="..." />
+                    <marker date="1617204427617" expanded="true" signature="647:656" ph="..." />
                   </folding>
                 </state>
               </provider>
@@ -103,23 +104,22 @@
           <file pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/test_inverted_index.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="1132">
-                  <caret line="367" column="30" lean-forward="true" selection-start-line="367" selection-start-column="30" selection-end-line="367" selection-end-column="30" />
+                <state relative-caret-position="180">
+                  <caret line="625" lean-forward="true" selection-start-line="625" selection-end-line="625" />
                   <folding>
                     <element signature="e#0#11#0" expanded="true" />
-                    <marker date="1617141298393" expanded="true" signature="116:121" ph="..." />
-                    <marker date="1617141298393" expanded="true" signature="234:235" ph="..." />
-                    <marker date="1617141298393" expanded="true" signature="2852:3677" ph="..." />
-                    <marker date="1617141298393" expanded="true" signature="3712:4904" ph="..." />
-                    <marker date="1617141298393" expanded="true" signature="4856:4904" ph="..." />
-                    <marker date="1617141298393" expanded="true" signature="4940:4945" ph="..." />
-                    <marker date="1617141298393" expanded="true" signature="5768:5769" ph="..." />
-                    <marker date="1617141298393" expanded="true" signature="8145:8536" ph="..." />
-                    <marker date="1617141298393" expanded="true" signature="8880:8881" ph="..." />
-                    <marker date="1617141298393" expanded="true" signature="10171:10818" ph="..." />
-                    <marker date="1617141298393" expanded="true" signature="11587:11588" ph="..." />
-                    <marker date="1617141298393" expanded="true" signature="13209:13369" ph="..." />
-                    <marker date="1617141298393" expanded="true" signature="13700:13705" ph="..." />
+                    <marker date="1617205487420" expanded="true" signature="116:121" ph="..." />
+                    <marker date="1617205487420" expanded="true" signature="234:235" ph="..." />
+                    <marker date="1617205487420" expanded="true" signature="2852:3677" ph="..." />
+                    <marker date="1617205487420" expanded="true" signature="3712:4904" ph="..." />
+                    <marker date="1617205487420" expanded="true" signature="6523:7380" ph="..." />
+                    <marker date="1617205487420" expanded="true" signature="8020:8624" ph="..." />
+                    <marker date="1617205487420" expanded="true" signature="17481:18199" ph="..." />
+                    <marker date="1617205487420" expanded="true" signature="18269:18324" ph="..." />
+                    <marker date="1617205487420" expanded="true" signature="20865:21234" ph="..." />
+                    <marker date="1617205487420" expanded="true" signature="21358:21359" ph="..." />
+                    <marker date="1617205487420" expanded="true" signature="21904:22479" ph="..." />
+                    <marker date="1617205487420" expanded="true" signature="23707:23712" ph="..." />
                   </folding>
                 </state>
               </provider>
@@ -148,9 +148,9 @@
     </option>
   </component>
   <component name="ProjectFrameBounds" extendedState="7">
-    <option name="x" value="-9" />
-    <option name="y" value="-9" />
-    <option name="width" value="1938" />
+    <option name="x" value="-10" />
+    <option name="y" value="-10" />
+    <option name="width" value="1939" />
     <option name="height" value="1060" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
@@ -189,7 +189,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python tests.pytest for test_inverted_index.test_build_inverted_index_12">
+  <component name="RunManager" selected="Python tests.pytest for test_inverted_index.test_number_and_no_words_in_document_28">
     <configuration name="pytest for test_inverted_index.test_build_inverted_index_12" type="tests" factoryName="py.test" temporary="true" nameIsGenerated="true">
       <module name="inverted_index" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -205,7 +205,7 @@
       <option name="_new_targetType" value="&quot;PYTHON&quot;" />
       <method v="2" />
     </configuration>
-    <configuration name="pytest for test_inverted_index.test_class_inverted_index_query_if_not_word_19" type="tests" factoryName="py.test" temporary="true" nameIsGenerated="true">
+    <configuration name="pytest for test_inverted_index.test_build_inverted_index_not_core_data_13" type="tests" factoryName="py.test" temporary="true" nameIsGenerated="true">
       <module name="inverted_index" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -216,11 +216,11 @@
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <option name="_new_keywords" value="&quot;&quot;" />
       <option name="_new_additionalArguments" value="&quot;&quot;" />
-      <option name="_new_target" value="&quot;test_inverted_index.test_class_inverted_index_query_if_not_word_19&quot;" />
+      <option name="_new_target" value="&quot;test_inverted_index.test_build_inverted_index_not_core_data_13&quot;" />
       <option name="_new_targetType" value="&quot;PYTHON&quot;" />
       <method v="2" />
     </configuration>
-    <configuration name="pytest for test_inverted_index.test_class_invertedindex_load_out_indices" type="tests" factoryName="py.test" temporary="true" nameIsGenerated="true">
+    <configuration name="pytest for test_inverted_index.test_number_and_no_words_in_document_28" type="tests" factoryName="py.test" temporary="true" nameIsGenerated="true">
       <module name="inverted_index" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -231,11 +231,11 @@
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <option name="_new_keywords" value="&quot;&quot;" />
       <option name="_new_additionalArguments" value="&quot;&quot;" />
-      <option name="_new_target" value="&quot;test_inverted_index.test_class_invertedindex_load_out_indices&quot;" />
+      <option name="_new_target" value="&quot;test_inverted_index.test_number_and_no_words_in_document_28&quot;" />
       <option name="_new_targetType" value="&quot;PYTHON&quot;" />
       <method v="2" />
     </configuration>
-    <configuration name="pytest for test_inverted_index.test_class_invertedindex_load_out_indices16" type="tests" factoryName="py.test" temporary="true" nameIsGenerated="true">
+    <configuration name="pytest for test_inverted_index.test_number_and_no_words_in_document_29" type="tests" factoryName="py.test" temporary="true" nameIsGenerated="true">
       <module name="inverted_index" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -246,7 +246,7 @@
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <option name="_new_keywords" value="&quot;&quot;" />
       <option name="_new_additionalArguments" value="&quot;&quot;" />
-      <option name="_new_target" value="&quot;test_inverted_index.test_class_invertedindex_load_out_indices16&quot;" />
+      <option name="_new_target" value="&quot;test_inverted_index.test_number_and_no_words_in_document_29&quot;" />
       <option name="_new_targetType" value="&quot;PYTHON&quot;" />
       <method v="2" />
     </configuration>
@@ -266,19 +266,19 @@
       <method v="2" />
     </configuration>
     <list>
-      <item itemvalue="Python tests.pytest for test_inverted_index.test_class_invertedindex_load_out_indices" />
-      <item itemvalue="Python tests.pytest for test_inverted_index.test_class_invertedindex_load_out_indices16" />
-      <item itemvalue="Python tests.pytest for test_inverted_index.test_class_inverted_index_query_if_not_word_19" />
       <item itemvalue="Python tests.pytest for test_inverted_index.test_work_function_load_documents_with_an_extra_newline_character_6" />
       <item itemvalue="Python tests.pytest for test_inverted_index.test_build_inverted_index_12" />
+      <item itemvalue="Python tests.pytest for test_inverted_index.test_build_inverted_index_not_core_data_13" />
+      <item itemvalue="Python tests.pytest for test_inverted_index.test_number_and_no_words_in_document_29" />
+      <item itemvalue="Python tests.pytest for test_inverted_index.test_number_and_no_words_in_document_28" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Python tests.pytest for test_inverted_index.test_number_and_no_words_in_document_28" />
+        <item itemvalue="Python tests.pytest for test_inverted_index.test_number_and_no_words_in_document_29" />
+        <item itemvalue="Python tests.pytest for test_inverted_index.test_build_inverted_index_not_core_data_13" />
         <item itemvalue="Python tests.pytest for test_inverted_index.test_build_inverted_index_12" />
         <item itemvalue="Python tests.pytest for test_inverted_index.test_work_function_load_documents_with_an_extra_newline_character_6" />
-        <item itemvalue="Python tests.pytest for test_inverted_index.test_class_inverted_index_query_if_not_word_19" />
-        <item itemvalue="Python tests.pytest for test_inverted_index.test_class_invertedindex_load_out_indices16" />
-        <item itemvalue="Python tests.pytest for test_inverted_index.test_class_invertedindex_load_out_indices" />
       </list>
     </recent_temporary>
   </component>
@@ -286,35 +286,35 @@
     <configuration />
   </component>
   <component name="TestHistory">
-    <history-entry file="pytest_for_test_inverted_index_test_work_function_load_documents_with_an_extra_newline_character_6 - 2021.03.30 at 22h 40m 47s.xml">
-      <configuration name="pytest for test_inverted_index.test_work_function_load_documents_with_an_extra_newline_character_6" configurationId="tests" />
+    <history-entry file="pytest_for_test_inverted_index_test_build_inverted_index_not_core_data_13 - 2021.03.31 at 14h 49m 57s.xml">
+      <configuration name="pytest for test_inverted_index.test_build_inverted_index_not_core_data_13" configurationId="tests" />
     </history-entry>
-    <history-entry file="pytest_for_test_inverted_index_test_work_function_load_documents_with_an_extra_newline_character_6 - 2021.03.30 at 22h 43m 09s.xml">
-      <configuration name="pytest for test_inverted_index.test_work_function_load_documents_with_an_extra_newline_character_6" configurationId="tests" />
+    <history-entry file="pytest_for_test_inverted_index_test_build_inverted_index_not_core_data_13 - 2021.03.31 at 14h 50m 10s.xml">
+      <configuration name="pytest for test_inverted_index.test_build_inverted_index_not_core_data_13" configurationId="tests" />
     </history-entry>
-    <history-entry file="pytest_for_test_inverted_index_test_work_function_load_documents_with_an_extra_newline_character_6 - 2021.03.30 at 22h 43m 16s.xml">
-      <configuration name="pytest for test_inverted_index.test_work_function_load_documents_with_an_extra_newline_character_6" configurationId="tests" />
+    <history-entry file="pytest_for_test_inverted_index_test_number_and_no_words_in_document_29 - 2021.03.31 at 17h 20m 22s.xml">
+      <configuration name="pytest for test_inverted_index.test_number_and_no_words_in_document_29" configurationId="tests" />
     </history-entry>
-    <history-entry file="pytest_for_test_inverted_index_test_work_function_load_documents_with_an_extra_newline_character_6 - 2021.03.30 at 22h 43m 18s.xml">
-      <configuration name="pytest for test_inverted_index.test_work_function_load_documents_with_an_extra_newline_character_6" configurationId="tests" />
+    <history-entry file="pytest_for_test_inverted_index_test_number_and_no_words_in_document_28 - 2021.03.31 at 17h 21m 02s.xml">
+      <configuration name="pytest for test_inverted_index.test_number_and_no_words_in_document_28" configurationId="tests" />
     </history-entry>
-    <history-entry file="pytest_for_test_inverted_index_test_work_function_load_documents_with_an_extra_newline_character_6 - 2021.03.30 at 22h 43m 20s.xml">
-      <configuration name="pytest for test_inverted_index.test_work_function_load_documents_with_an_extra_newline_character_6" configurationId="tests" />
+    <history-entry file="pytest_for_test_inverted_index_test_number_and_no_words_in_document_28 - 2021.03.31 at 17h 30m 17s.xml">
+      <configuration name="pytest for test_inverted_index.test_number_and_no_words_in_document_28" configurationId="tests" />
     </history-entry>
-    <history-entry file="pytest_for_test_inverted_index_test_work_function_load_documents_with_an_extra_newline_character_6 - 2021.03.30 at 22h 48m 14s.xml">
-      <configuration name="pytest for test_inverted_index.test_work_function_load_documents_with_an_extra_newline_character_6" configurationId="tests" />
+    <history-entry file="pytest_for_test_inverted_index_test_number_and_no_words_in_document_28 - 2021.03.31 at 17h 36m 25s.xml">
+      <configuration name="pytest for test_inverted_index.test_number_and_no_words_in_document_28" configurationId="tests" />
     </history-entry>
-    <history-entry file="pytest_for_test_inverted_index_test_work_function_load_documents_with_an_extra_newline_character_6 - 2021.03.30 at 22h 48m 19s.xml">
-      <configuration name="pytest for test_inverted_index.test_work_function_load_documents_with_an_extra_newline_character_6" configurationId="tests" />
+    <history-entry file="pytest_for_test_inverted_index_test_number_and_no_words_in_document_28 - 2021.03.31 at 17h 36m 58s.xml">
+      <configuration name="pytest for test_inverted_index.test_number_and_no_words_in_document_28" configurationId="tests" />
     </history-entry>
-    <history-entry file="pytest_for_test_inverted_index_test_work_function_load_documents_with_an_extra_newline_character_6 - 2021.03.30 at 23h 18m 32s.xml">
-      <configuration name="pytest for test_inverted_index.test_work_function_load_documents_with_an_extra_newline_character_6" configurationId="tests" />
+    <history-entry file="pytest_for_test_inverted_index_test_number_and_no_words_in_document_28 - 2021.03.31 at 17h 38m 04s.xml">
+      <configuration name="pytest for test_inverted_index.test_number_and_no_words_in_document_28" configurationId="tests" />
     </history-entry>
-    <history-entry file="pytest_for_test_inverted_index_test_build_inverted_index_12 - 2021.03.30 at 23h 33m 49s.xml">
-      <configuration name="pytest for test_inverted_index.test_build_inverted_index_12" configurationId="tests" />
+    <history-entry file="pytest_for_test_inverted_index_test_number_and_no_words_in_document_28 - 2021.03.31 at 17h 38m 38s.xml">
+      <configuration name="pytest for test_inverted_index.test_number_and_no_words_in_document_28" configurationId="tests" />
     </history-entry>
-    <history-entry file="pytest_for_test_inverted_index_test_build_inverted_index_12 - 2021.03.30 at 23h 37m 08s.xml">
-      <configuration name="pytest for test_inverted_index.test_build_inverted_index_12" configurationId="tests" />
+    <history-entry file="pytest_for_test_inverted_index_test_number_and_no_words_in_document_28 - 2021.03.31 at 18h 44m 50s.xml">
+      <configuration name="pytest for test_inverted_index.test_number_and_no_words_in_document_28" configurationId="tests" />
     </history-entry>
   </component>
   <component name="ToolWindowManager">
@@ -361,35 +361,34 @@
     <entry file="file://$PROJECT_DIR$/inverted.index" />
     <entry file="file://$PROJECT_DIR$/inverted_index.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="574">
-          <caret line="72" column="24" selection-start-line="72" selection-start-column="4" selection-end-line="72" selection-end-column="24" />
+        <state relative-caret-position="197">
+          <caret line="61" selection-start-line="61" selection-end-line="61" />
           <folding>
             <element signature="e#0#11#0" expanded="true" />
-            <marker date="1617134195206" expanded="true" signature="482:622" ph="..." />
-            <marker date="1617134195206" expanded="true" signature="647:656" ph="..." />
+            <marker date="1617204427617" expanded="true" signature="482:622" ph="..." />
+            <marker date="1617204427617" expanded="true" signature="647:656" ph="..." />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/test_inverted_index.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1132">
-          <caret line="367" column="30" lean-forward="true" selection-start-line="367" selection-start-column="30" selection-end-line="367" selection-end-column="30" />
+        <state relative-caret-position="180">
+          <caret line="625" lean-forward="true" selection-start-line="625" selection-end-line="625" />
           <folding>
             <element signature="e#0#11#0" expanded="true" />
-            <marker date="1617141298393" expanded="true" signature="116:121" ph="..." />
-            <marker date="1617141298393" expanded="true" signature="234:235" ph="..." />
-            <marker date="1617141298393" expanded="true" signature="2852:3677" ph="..." />
-            <marker date="1617141298393" expanded="true" signature="3712:4904" ph="..." />
-            <marker date="1617141298393" expanded="true" signature="4856:4904" ph="..." />
-            <marker date="1617141298393" expanded="true" signature="4940:4945" ph="..." />
-            <marker date="1617141298393" expanded="true" signature="5768:5769" ph="..." />
-            <marker date="1617141298393" expanded="true" signature="8145:8536" ph="..." />
-            <marker date="1617141298393" expanded="true" signature="8880:8881" ph="..." />
-            <marker date="1617141298393" expanded="true" signature="10171:10818" ph="..." />
-            <marker date="1617141298393" expanded="true" signature="11587:11588" ph="..." />
-            <marker date="1617141298393" expanded="true" signature="13209:13369" ph="..." />
-            <marker date="1617141298393" expanded="true" signature="13700:13705" ph="..." />
+            <marker date="1617205487420" expanded="true" signature="116:121" ph="..." />
+            <marker date="1617205487420" expanded="true" signature="234:235" ph="..." />
+            <marker date="1617205487420" expanded="true" signature="2852:3677" ph="..." />
+            <marker date="1617205487420" expanded="true" signature="3712:4904" ph="..." />
+            <marker date="1617205487420" expanded="true" signature="6523:7380" ph="..." />
+            <marker date="1617205487420" expanded="true" signature="8020:8624" ph="..." />
+            <marker date="1617205487420" expanded="true" signature="17481:18199" ph="..." />
+            <marker date="1617205487420" expanded="true" signature="18269:18324" ph="..." />
+            <marker date="1617205487420" expanded="true" signature="20865:21234" ph="..." />
+            <marker date="1617205487420" expanded="true" signature="21358:21359" ph="..." />
+            <marker date="1617205487420" expanded="true" signature="21904:22479" ph="..." />
+            <marker date="1617205487420" expanded="true" signature="23707:23712" ph="..." />
           </folding>
         </state>
       </provider>
