@@ -736,7 +736,12 @@ def creat_inverted_index(creat_index_and_words_with_temp_file,
     return inverted_index.build_inverted_index(indexs=indexs,
                                                words=words,
                                                stop_words=stop_words)
-
+@pytest.fixture
+def creat_file_inverted_index(creat_inverted_index, tmp_path):
+    tpath = tmp_path / 'tmp'
+    tinverted_index = creat_inverted_index
+    tinverted_index.dump(filepath=tpath)
+    return tpath
 
 class TestLoadDocuments:
     """
@@ -809,9 +814,19 @@ class TestClassInverteIndex:
         tinverted_index.dump(filepath=tpath)
         assert tpath.open(mode='r')
 
-    def test_can_load_file_inverted_index(self, creat_inverted_index, tmp_path):
-        tpath = tmp_path / 'tmp'
-        tinverted_index = creat_inverted_index
-        tinverted_index.dump(filepath=tpath)
+    def test_can_load_file_inverted_index(self, creat_inverted_index, creat_file_inverted_index):
+        assert inverted_index.InvertedIndex.load(creat_file_inverted_index).word_to_docs_mapping == \
+               creat_inverted_index.word_to_docs_mapping
 
-        assert inverted_index.InvertedIndex.load(tpath).word_to_docs_mapping == tinverted_index.word_to_docs_mapping
+    def test_can_use_query_inverted_index(self, creat_file_inverted_index):
+        tinverted_index = inverted_index.InvertedIndex.load(creat_file_inverted_index)
+        assert tinverted_index.query('wind') == {
+            'wind': {1}
+        }
+
+    def test_can_use_query_with_two_words(self, creat_file_inverted_index):
+        tinverted_index = inverted_index.InvertedIndex.load(creat_file_inverted_index)
+        assert tinverted_index.query('two', 'wind') == {
+            'two': {},
+            'wind': {1}
+        }
