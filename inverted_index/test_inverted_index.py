@@ -9,7 +9,7 @@ def test_can_import_inverted_index_module_1():
     """
         Ипорт модуля inverted_index
     """
-    import inverted_index
+    assert inverted_index
 
 
 def test_can_load_load_documents_2():
@@ -171,7 +171,7 @@ def build_inverted_index_for_creat_data_not_corect(tmpdir):
     test_doc_stop_words = tmpdir.join('stop_words.txt')
     test_doc_stop_words.write('and\ni\n')
 
-    result_load_doc  = inverted_index.load_documents(filepath=test_doc)
+    result_load_doc = inverted_index.load_documents(filepath=test_doc)
     result_load_stop_words = inverted_index.load_stop_words(filepath=test_doc_stop_words)
 
     result_inverted_index_build_inverted_index = inverted_index.build_inverted_index(stop_words=result_load_stop_words,
@@ -311,7 +311,7 @@ def test_class_invertedindex_query_18():
     test_stop_words = {'hi', 'cant', 'lol'}
     test_result = inverted_index.build_inverted_index(indexs=test_index, stop_words=test_stop_words,
                                                       words=test_words)
-    test_query = test_result.query(['two', 'test'])
+    test_query = test_result.query('two', 'test')
     etalon = {
         'two': {3},
         'test': {0, 1, 3}
@@ -328,7 +328,7 @@ def test_class_invertedindex_query_with_two_words_19():
     test_stop_words = {'hi', 'cant', 'lol'}
     test_result = inverted_index.build_inverted_index(indexs=test_index, stop_words=test_stop_words,
                                                       words=test_words)
-    test_query = test_result.query(['two', 'two'])
+    test_query = test_result.query('two', 'two')
     etalon = {
         'two': {3}
     }
@@ -353,7 +353,7 @@ def test_class_inverted_index_query_if_not_word_20(tmp_path):
     ftest.close()
 
     test_load_inverted_index = inverted_index.InvertedIndex.load(test_path)
-    test_query = test_load_inverted_index.query(['begin'])
+    test_query = test_load_inverted_index.query('begin')
     etalon = {'begin': {}}
     assert test_query == etalon
 
@@ -376,7 +376,7 @@ def test_class_invertedindex_query_work_with_loaded_index_21(tmp_path):
     ftest.close()
 
     test_load_inverted_index = inverted_index.InvertedIndex.load(test_path)
-    test_query = test_load_inverted_index.query(['two'])
+    test_query = test_load_inverted_index.query('two')
     etalon = {
         'two': {3, 25}
     }
@@ -404,7 +404,7 @@ def test_all_22(tmp_path, tmpdir):
     test_inverted_index2.dump(test_doc3)  # json записывается на диск
 
     test_inverted_index_load = inverted_index.InvertedIndex.load(test_doc3)
-    document_ids = test_inverted_index_load.query(["two"])
+    document_ids = test_inverted_index_load.query("two")
     etalon = {
         'two': {1, 3}
     }
@@ -422,7 +422,7 @@ def fixture_inverted_index(tmp_path):
 
 
 def test_class_invertedindex_query_with_fixture_23(fixture_inverted_index):
-    test_query = fixture_inverted_index.query(['two', 'test'])
+    test_query = fixture_inverted_index.query('two', 'test')
     etalon = {
         'two': {3},
         'test': {0, 1, 3}}
@@ -430,7 +430,7 @@ def test_class_invertedindex_query_with_fixture_23(fixture_inverted_index):
 
 
 def test_class_invertedindex_query_with_two_words_with_fixture_24(fixture_inverted_index):
-    test_query = fixture_inverted_index.query(['two', 'two'])
+    test_query = fixture_inverted_index.query('two', 'two')
     etalon = {
         'two': {3}
     }
@@ -451,6 +451,7 @@ def test_doc_do_not_contaon_index_25(tmpdir):
     etalon_words = [{'name', 'doc', 'this', 'test', 'i', 'will', 'use', 'text', 'for', 'the'}]
     assert test_indexs == etalon_index
     assert etalon_words == test_words
+
 
 # Добавить тесты, которые обрабатываеют результаты некоректных данных, которые передаюется далее по программе:
 # что будет делать build_inverted_index, если не будет номера документа и тд...
@@ -547,7 +548,7 @@ def test_query_not_number_doc_where_lot_documents_with_two_doc_have_not_number_2
 
     test_inverted_index.dump(filepath=tile_path)
     load_test_inverted_index = inverted_index.InvertedIndex.load(tile_path)
-    result_query = load_test_inverted_index.query(['south'])
+    result_query = load_test_inverted_index.query('south')
     assert result_query == {'south': {None}}
 
 
@@ -579,7 +580,7 @@ def test_number_and_no_words_in_document_27(creat_doc_have_not_words):
 # @pytest.mark.skip(reason='not implemented test 28')
 def test_number_and_no_words_in_document_28(creat_doc_have_not_words):
     indexs, words = creat_doc_have_not_words
-    stop_words = {'i', 'a', 'am', 'is', 'by', 'and','the'}
+    stop_words = {'i', 'a', 'am', 'is', 'by', 'and', 'the'}
     test_inverted_index = inverted_index.build_inverted_index(indexs=indexs, words=words, stop_words=stop_words)
     etalon = {
         'sit': {4},
@@ -647,3 +648,170 @@ def test_build_inverted_one_doc_have_doc_with_dont_new_index_30(create_not_corec
         'park': {6}
     }
     assert etalan == test_inverted_idex.word_to_docs_mapping
+
+
+"""
+Testing with parametrize
+"""
+
+
+@pytest.mark.parametrize('task,result',
+                         [(([0, 1],
+                            [{'words', 'name'}, {'words', 'name', 'testing'}]),
+                           {
+                               'words': {0, 1},
+                               'name': {0, 1},
+                               'testing': {1}
+                           }),
+                          (([0, 1],
+                            [{'words', 'test'}, {}]),
+                           {
+                               'words': {0},
+                               'test': {0}
+                           })])
+def test_inverted_index_build_inverted_index_31(task, result):
+    assert inverted_index.build_inverted_index(indexs=task[0],
+                                               words=task[1],
+                                               stop_words={}).word_to_docs_mapping == result
+
+
+def creat_test_file_for_load_with_him():
+    index = [0, 1]
+    words = [{'words', 'name', 'test'}, {'words', 'green', 'man'}]
+    test_inverted_index = inverted_index.build_inverted_index(indexs=index,
+                                                              words=words,
+                                                              stop_words={})
+    return test_inverted_index
+
+
+@pytest.mark.parametrize('task2', [creat_test_file_for_load_with_him])
+def test_InverteIndex_load_32(task2):
+    assert task2().query('two') == {'two': {}}
+
+
+"""
+Using Test Class
+"""
+
+
+@pytest.fixture
+def creat_data_file_wiki_sample(tmpdir):
+    """
+        Create a text file for running tests
+    :param tmpdir: Temporary file
+    :return: Temporary file with test wiki sample
+    """
+    test_wiki_text = "0\tDon't believe in tears\n" \
+                     "1\tThe wind is making noise in my head\n" \
+                     "2\tWalking with spring"
+    tmpfile = tmpdir.join('wiki_test_smple')
+    tmpfile.write(test_wiki_text)
+    return tmpfile
+
+
+@pytest.fixture
+def creat_index_and_words_with_temp_file(creat_data_file_wiki_sample):
+    return inverted_index.load_documents(creat_data_file_wiki_sample)
+
+
+@pytest.fixture
+def creat_temp_file_with_stop_words(tmpdir):
+    test_stop_words_text = 'it\ni\nis\nmy\nin\nthe'
+
+    tmpfile = tmpdir.join('stop_words')
+    tmpfile.write(test_stop_words_text)
+    return tmpfile
+
+
+@pytest.fixture
+def creat_stop_words_wher_load_stop_words_with_fiel(creat_temp_file_with_stop_words):
+    return inverted_index.load_stop_words(filepath=creat_temp_file_with_stop_words)
+
+
+@pytest.fixture
+def creat_inverted_index(creat_index_and_words_with_temp_file,
+                         creat_stop_words_wher_load_stop_words_with_fiel):
+    indexs, words = creat_index_and_words_with_temp_file
+    stop_words = creat_stop_words_wher_load_stop_words_with_fiel
+    return inverted_index.build_inverted_index(indexs=indexs,
+                                               words=words,
+                                               stop_words=stop_words)
+
+
+class TestLoadDocuments:
+    """
+    function testing load_documents
+    """
+
+    def test_can_use_fuction_load_documents(self):
+        assert inverted_index.load_documents
+
+    def test_can_open_file_in_load_documents(self, creat_data_file_wiki_sample):
+        index, words = inverted_index.load_documents(filepath=creat_data_file_wiki_sample)
+        assert index == [0, 1, 2]
+        assert words == [{'believe', 'in', 'tears'}, {'the', 'wind', 'is', 'making',
+                                                      'noise', 'in', 'my', 'head'},
+                         {'walking', 'with', 'spring'}]
+
+
+class TestLoadStopWords:
+    """
+    function testing load_stop_words
+    """
+
+    def test_can_use_fuction_load_stop_words(self):
+        assert inverted_index.load_stop_words
+
+    def test_load_stop_words_with_temp_file(self, creat_temp_file_with_stop_words):
+        stop_words = inverted_index.load_stop_words(filepath=creat_temp_file_with_stop_words)
+        assert stop_words == {'it', 'i', 'is', 'my', 'in', 'the'}
+
+
+class TestBuildInvertedIndex:
+    """
+    function testing build_inverted_index
+    """
+
+    def test_can_use_fuction_build_inverted_index(self):
+        assert inverted_index.build_inverted_index
+
+    def test_can_build_inverted_index(self, creat_index_and_words_with_temp_file,
+                                      creat_stop_words_wher_load_stop_words_with_fiel):
+        index, words = creat_index_and_words_with_temp_file
+        tinverted_index = inverted_index.build_inverted_index(
+            indexs=index,
+            words=words,
+            stop_words=creat_stop_words_wher_load_stop_words_with_fiel)
+        assert tinverted_index.word_to_docs_mapping == {
+            'believe': {0}, 'tears': {0}, 'wind': {1},
+            'making': {1}, 'noise': {1}, 'head': {1}, 'walking': {2}, 'with': {2}, 'spring': {2}
+        }
+
+
+class TestClassInverteIndex:
+    """
+    Test class inverted index
+    """
+
+    def test_can_use_class_inverted_index(self):
+        assert inverted_index.InvertedIndex
+
+    def test_get_word_to_docs_mapping(self, creat_inverted_index):
+        assert creat_inverted_index.word_to_docs_mapping == {
+            'believe': {0}, 'tears': {0}, 'wind': {1},
+            'making': {1}, 'noise': {1}, 'head': {1},
+            'walking': {2}, 'with': {2}, 'spring': {2}
+        }
+
+    def test_can_use_dump_inverted_index(self, creat_inverted_index, tmp_path):
+        tpath = tmp_path / 'tmp'
+        tinverted_index = creat_inverted_index
+        tinverted_index.dump(filepath=tpath)
+        assert tpath.open(mode='r')
+
+    def test_can_load_file_inverted_index(self, creat_inverted_index, tmp_path):
+        tpath = tmp_path / 'tmp'
+        tinverted_index = creat_inverted_index
+        tinverted_index.dump(filepath=tpath)
+
+        assert inverted_index.InvertedIndex.load(tpath).word_to_docs_mapping == tinverted_index.word_to_docs_mapping

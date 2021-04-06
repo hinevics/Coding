@@ -2,6 +2,7 @@ import json
 from re import sub
 import os.path
 
+# import nltk  # для чистки слов
 # from collections import defaultdict
 
 work_links = {
@@ -12,10 +13,11 @@ work_links = {
 
 class InvertedIndex:
     def __init__(self, word_to_docs_mapping):
+
         self.word_to_docs_mapping = {
             word: doc_ids for word, doc_ids in word_to_docs_mapping.items()}
 
-    def query(self, words):
+    def query(self, *words):
         return {word: self.word_to_docs_mapping[word] if word in self.word_to_docs_mapping else {}
                 for word in words}
 
@@ -53,6 +55,13 @@ class InvertedIndex:
 
 
 def load_documents(filepath):
+    # выхов pdb
+    # from pdb import set_trace
+    # set_trace()
+
+    # вызов ipython
+    # from IPython import embed
+    # embed()
     with open(file=filepath, encoding='utf-8') as file:
         documents = [i for i in sub(r'[\.\,\!\?]', '', file.read()).split('\n') if i != '']
     index, words = [], []
@@ -73,7 +82,7 @@ def load_stop_words(filepath):
 def build_inverted_index(indexs, words, stop_words):
     inverted_index = dict()
     for word, index in zip(words, indexs):
-        if not (word is None):
+        if not ((word is None) or (word == {})):
             word.difference_update(stop_words)
             for w in word:
                 if not (w in inverted_index.keys()):
