@@ -1,27 +1,48 @@
 import json
 from re import sub
 import os.path
+import argparse
+import typing
 
-# import nltk  # для чистки слов
-# from collections import defaultdict
+default_links = {
+    'link_wiki_sample': r'..\Data\wikipedia_sample',
+    'link_stop_words': r'..\Data\stop_words_en.txt',
+    'link_inverted_index': r'D:\Development\Coding\result-inverted-index\inverted-index'}
 
+parser = argparse.ArgumentParser(description='This program creates an Inverted Index from a set of documents')
+parser.add_argument("--link_wiki_sample", default=default_links['link_wiki_sample'],
+                    help='This is a link to a file with documents from which will be converted to an inverted index',
+                    type=str)
+parser.add_argument("--link_stop_words", default=default_links['link_stop_words'],
+                    help='This is a link to a file stop words',
+                    type=str)
+parser.add_argument("--link_inverted_index", default=default_links['link_inverted_index'],
+                    help='This is a link where the inverted index will be saved',
+                    type=str)
+
+parser.add_argument('--requested_word', help='Words that will determine the indices of the files where it occurs',
+                    required=True, type=str)
+args = parser.parse_args()
+
+requested_word = args.requested_word.split('-')
 work_links = {
-    'dataset': r'D:\Development\Coding\Coding\Data\wikipedia_sample',
-    'stop_words': r'D:\Development\Coding\Coding\Data\stop_words_en.txt',
-    'invert_index': ...}
+    'link_wiki_sample': args.link_wiki_sample,
+    'link_stop_words': args.link_stop_words,
+    'link_inverted_index': args.link_inverted_index
+}
 
 
 class InvertedIndex:
-    def __init__(self, word_to_docs_mapping):
+    def __init__(self, word_to_docs_mapping: dict):
 
         self.word_to_docs_mapping = {
             word: doc_ids for word, doc_ids in word_to_docs_mapping.items()}
 
-    def query(self, *words):
+    def query(self, words):
         return {word: self.word_to_docs_mapping[word] if word in self.word_to_docs_mapping else {}
                 for word in words}
 
-    def dump(self, filepath):
+    def dump(self, filepath: str):
         # преобразую set в list для записи в json
         words_doc_ids = {
             word: list(ids) for word, ids in self.word_to_docs_mapping.items()}
@@ -48,13 +69,13 @@ class InvertedIndex:
             json.dump(words_with_file, file)
 
     @classmethod
-    def load(cls, filepath):
+    def load(cls, filepath: str):
         # считывем с диска
         with open(file=filepath, mode='r', encoding='utf-8') as file:
             return InvertedIndex({index: set(words) for index, words in json.load(fp=file).items()})
 
 
-def load_documents(filepath):
+def load_documents(filepath: str):
     # выхов pdb
     # from pdb import set_trace
     # set_trace()
@@ -73,13 +94,13 @@ def load_documents(filepath):
     return index, words
 
 
-def load_stop_words(filepath):
+def load_stop_words(filepath: str):
     with open(file=filepath, encoding='utf-8') as file:
         result = set(map(lambda x: x.lower().strip('\n'), file.readlines()))
     return result
 
 
-def build_inverted_index(indexs, words, stop_words):
+def build_inverted_index(indexs: list, words: list, stop_words: set) -> InvertedIndex:
     inverted_index = dict()
     for word, index in zip(words, indexs):
         if not ((word is None) or (word == {})):
@@ -93,12 +114,13 @@ def build_inverted_index(indexs, words, stop_words):
 
 
 def main():
-    indexs, words = load_documents(work_links['dataset'])
-    stop_words = load_stop_words(work_links['stop_words'])
+    indexs, words = load_documents(work_links['link_wiki_sample'])
+    stop_words = load_stop_words(work_links['link_stop_words'])
     inverted_index1 = build_inverted_index(indexs=indexs, words=words, stop_words=stop_words)
     inverted_index1.dump("inverted.index")  # json записывается на диск
-    inverted_index2 = InvertedIndex.load("inverted.index")
-    document_ids = inverted_index2.query(["two", "words"])
+    inverted_index2 = InvertedIndex.load(work_links['link_inverted_index'])
+    document_ids = inverted_index2.query(requested_word)
+    print(f'Your query {document_ids}')
 
 
 if __name__ == "__main__":
