@@ -23,7 +23,7 @@ def test_len_document_3():
     """
         Проверка файла с документами
     """
-    test_link = inverted_index.work_links['dataset']
+    test_link = inverted_index.work_links['link_wiki_sample']
     with open(file=test_link, mode='r', encoding='utf-8') as file:
         data = file.readlines()
         assert len(data) == 4100
@@ -311,7 +311,7 @@ def test_class_invertedindex_query_18():
     test_stop_words = {'hi', 'cant', 'lol'}
     test_result = inverted_index.build_inverted_index(indexs=test_index, stop_words=test_stop_words,
                                                       words=test_words)
-    test_query = test_result.query('two', 'test')
+    test_query = test_result.query(['two', 'test'])
     etalon = {
         'two': {3},
         'test': {0, 1, 3}
@@ -328,7 +328,7 @@ def test_class_invertedindex_query_with_two_words_19():
     test_stop_words = {'hi', 'cant', 'lol'}
     test_result = inverted_index.build_inverted_index(indexs=test_index, stop_words=test_stop_words,
                                                       words=test_words)
-    test_query = test_result.query('two', 'two')
+    test_query = test_result.query(['two', 'two'])
     etalon = {
         'two': {3}
     }
@@ -353,7 +353,7 @@ def test_class_inverted_index_query_if_not_word_20(tmp_path):
     ftest.close()
 
     test_load_inverted_index = inverted_index.InvertedIndex.load(test_path)
-    test_query = test_load_inverted_index.query('begin')
+    test_query = test_load_inverted_index.query(['begin'])
     etalon = {'begin': {}}
     assert test_query == etalon
 
@@ -376,7 +376,7 @@ def test_class_invertedindex_query_work_with_loaded_index_21(tmp_path):
     ftest.close()
 
     test_load_inverted_index = inverted_index.InvertedIndex.load(test_path)
-    test_query = test_load_inverted_index.query('two')
+    test_query = test_load_inverted_index.query(['two'])
     etalon = {
         'two': {3, 25}
     }
@@ -404,7 +404,7 @@ def test_all_22(tmp_path, tmpdir):
     test_inverted_index2.dump(test_doc3)  # json записывается на диск
 
     test_inverted_index_load = inverted_index.InvertedIndex.load(test_doc3)
-    document_ids = test_inverted_index_load.query("two")
+    document_ids = test_inverted_index_load.query(["two"])
     etalon = {
         'two': {1, 3}
     }
@@ -422,7 +422,7 @@ def fixture_inverted_index(tmp_path):
 
 
 def test_class_invertedindex_query_with_fixture_23(fixture_inverted_index):
-    test_query = fixture_inverted_index.query('two', 'test')
+    test_query = fixture_inverted_index.query(['two', 'test'])
     etalon = {
         'two': {3},
         'test': {0, 1, 3}}
@@ -430,7 +430,7 @@ def test_class_invertedindex_query_with_fixture_23(fixture_inverted_index):
 
 
 def test_class_invertedindex_query_with_two_words_with_fixture_24(fixture_inverted_index):
-    test_query = fixture_inverted_index.query('two', 'two')
+    test_query = fixture_inverted_index.query(['two', 'two'])
     etalon = {
         'two': {3}
     }
@@ -548,7 +548,7 @@ def test_query_not_number_doc_where_lot_documents_with_two_doc_have_not_number_2
 
     test_inverted_index.dump(filepath=tile_path)
     load_test_inverted_index = inverted_index.InvertedIndex.load(tile_path)
-    result_query = load_test_inverted_index.query('south')
+    result_query = load_test_inverted_index.query(['south'])
     assert result_query == {'south': {None}}
 
 
@@ -686,7 +686,7 @@ def creat_test_file_for_load_with_him():
 
 @pytest.mark.parametrize('task2', [creat_test_file_for_load_with_him])
 def test_InverteIndex_load_32(task2):
-    assert task2().query('two') == {'two': {}}
+    assert task2().query(['two']) == {'two': {}}
 
 
 """
@@ -820,13 +820,13 @@ class TestClassInverteIndex:
 
     def test_can_use_query_inverted_index(self, creat_file_inverted_index):
         tinverted_index = inverted_index.InvertedIndex.load(creat_file_inverted_index)
-        assert tinverted_index.query('wind') == {
+        assert tinverted_index.query(['wind']) == {
             'wind': {1}
         }
 
     def test_can_use_query_with_two_words(self, creat_file_inverted_index):
         tinverted_index = inverted_index.InvertedIndex.load(creat_file_inverted_index)
-        assert tinverted_index.query('two', 'wind') == {
+        assert tinverted_index.query(['two', 'wind']) == {
             'two': {},
             'wind': {1}
         }
