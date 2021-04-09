@@ -19,16 +19,6 @@ def test_can_load_load_documents_2():
     assert inverted_index.load_documents
 
 
-def test_len_document_3():
-    """
-        Проверка файла с документами
-    """
-    test_link = inverted_index.work_links['link_wiki_sample']
-    with open(file=test_link, mode='r', encoding='utf-8') as file:
-        data = file.readlines()
-        assert len(data) == 4100
-
-
 def test_work_function_load_documents_with_one_doc_4(tmpdir):
     """
         Как отрабатывает функция при работе с одним нормальным документом в файле,  для записи тестируемого документа
@@ -736,12 +726,15 @@ def creat_inverted_index(creat_index_and_words_with_temp_file,
     return inverted_index.build_inverted_index(indexs=indexs,
                                                words=words,
                                                stop_words=stop_words)
+
+
 @pytest.fixture
 def creat_file_inverted_index(creat_inverted_index, tmp_path):
     tpath = tmp_path / 'tmp'
     tinverted_index = creat_inverted_index
     tinverted_index.dump(filepath=tpath)
     return tpath
+
 
 class TestLoadDocuments:
     """
