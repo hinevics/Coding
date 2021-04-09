@@ -6,11 +6,9 @@ import typing
 
 # Global Variables
 # Default link will use in add_arguments
-DEFAULT_LINKS = {
-    'link_wiki_sample': r'..\Data\wikipedia_sample',
-    'link_stop_words': r'..\Data\stop_words_en.txt',
-    'link_inverted_index': r'D:\Development\Coding\result-inverted-index\inverted.index'}
-
+DEFAULT_LINK_WIKI_SAMPLE = r'..\Data\wikipedia_sample'
+DEFAULT_LINK_STOP_WORDS = r'..\Data\stop_words_en.txt'
+DEFAULT_LINK_INVERTED_INDEX = r'D:\Development\Coding\result-inverted-index\inverted.index'
 
 # work_links = {
 #     'link_wiki_sample': r'..\Data\wikipedia_sample',
@@ -101,25 +99,23 @@ def build_inverted_index(indexs: list, words: list, stop_words: set) -> Inverted
 
 def set_parser(parser):
     # argument to set path dataset file
-    parser.add_argument('-d', "--dataset", default=DEFAULT_LINKS['link_wiki_sample'],
+    parser.add_argument('-d', "--dataset", default=DEFAULT_LINK_WIKI_SAMPLE,
                         help='This is a link to a file with documents'
                              'from which will be converted to an inverted index.',
                         type=str)
     # required=True -- делает обязательным аргументом
 
     # argument to set path stop words file
-    parser.add_argument('-sw', "--stopwords", default=DEFAULT_LINKS['link_stop_words'],
-                        help='This is a link to a file stop words. '
-                             f"(default={DEFAULT_LINKS['link_stop_words']})",
+    parser.add_argument('-sw', "--stopwords", default=DEFAULT_LINK_STOP_WORDS,
+                        help='This is a link to a file stop words.',
                         type=str)
     # argument to set the path for save inverted index file
-    parser.add_argument('-pathii', "--path_invertedindex", default=DEFAULT_LINKS['link_inverted_index'],
-                        help='This is a link where the inverted index will be saved. '
-                             f"(default={DEFAULT_LINKS['link_inverted_index']})",
+    parser.add_argument('-pathii', "--path_invertedindex", default=DEFAULT_LINK_INVERTED_INDEX,
+                        help='This is a link where the inverted index will be saved',
                         type=str)
 
     # argument to query for words
-    parser.add_argument('wordrequest', help='Words that will determine the indices of the files where it occurs',
+    parser.add_argument('-q', '--query', help='Words that will determine the indices of the files where it occurs',
                         type=str, nargs='*', default=None)
 
     # flag for creat inverted index
@@ -127,28 +123,25 @@ def set_parser(parser):
         '-c', '--creat',
         action='store_true',
         default=False,
-        help='Create an inverted index file. '
-             f'Please, specify the path to the file with documents (defult={DEFAULT_LINKS["link_wiki_sample"]}), '
-             f'the file of stop words (defult={DEFAULT_LINKS["link_stop_words"]})'
-             f' and the path where to save the result (defult={DEFAULT_LINKS["link_inverted_index"]})')
+        help='Create an inverted index file')
 
     # flag for search words in inverted index
     parser.add_argument(
         '-s', '--search',
         action='store_true',
         default=False,
-        help='Search for words in inverted index. This flag requires a positional argument (defualt=None). '
-             f'Please, specify the path to inverted index file (defult={DEFAULT_LINKS["link_inverted_index"]})')
-
+        help='Search for words in inverted index. This flag requires a positional argument',
+    )
 
 def main():
     # Argument processing
     parser = argparse.ArgumentParser(
-        description='This program (%(prog)s) creates an Inverted Index from a set of documents')
+        description='This program (%(prog)s) creates an Inverted Index from a set of documents',
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter)
     set_parser(parser)
     args = parser.parse_args()
     # search words
-    requested_word = args.wordrequest
+    requested_word = args.query
     # flags
     flag_c = args.creat
     flag_s = args.search
@@ -162,19 +155,28 @@ def main():
     # creation script inverted index
     if flag_c:
         # Creat inverted index and save her in filt by path
+        print('loading documents ...')
         indexs, words = load_documents(work_links['link_wiki_sample'])
+        print('loading documents is complete')
+        print('loading stop words ...')
         stop_words = load_stop_words(work_links['link_stop_words'])
+        print('loading stop words is complete')
+        print('start build inverted index ... ')
         inverted_index1 = build_inverted_index(indexs=indexs, words=words, stop_words=stop_words)
+        print('dump inverted index ... ')
         inverted_index1.dump(work_links['link_inverted_index'])
         print(f'The inverted index is built.\nThe path to the file\n\t{work_links["link_inverted_index"]}')
     elif flag_s:
         # Search words in inverted index
         if requested_word:
+            print("loading inverted index ...")
             f_inverted_index = InvertedIndex.load(filepath=work_links['link_inverted_index'])
+            print('loading inverted index is complete')
+            print("search words ...")
             return_id_docs_with_requested_words = f_inverted_index.query(requested_word)
             print('Your query: {f1}'.format(f1=return_id_docs_with_requested_words))
         else:
-            print('Enter the words you want to find as arguments!\n',
+            print('Enter the words you want to find as arguments!',
                   f'Positional Argument requested_word={requested_word}')
     # indexs, words = load_documents(work_links['link_wiki_sample'])
     # stop_words = load_stop_words(work_links['link_stop_words'])

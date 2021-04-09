@@ -2,6 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="77b3cfb5-79ee-4b48-969d-cd09fdb84a67" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/inverted_index.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inverted_index.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/inverted_index.py" beforeDir="false" afterPath="$PROJECT_DIR$/inverted_index.py" afterDir="false" />
     </list>
@@ -81,30 +84,45 @@
         </counts>
       </usages-collector>
     </session>
+    <session id="15484971">
+      <usages-collector id="statistics.lifecycle.project">
+        <counts>
+          <entry key="project.open.time.16" value="1" />
+          <entry key="project.opened" value="1" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.file.extensions.open">
+        <counts>
+          <entry key="py" value="1" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.file.types.open">
+        <counts>
+          <entry key="Python" value="1" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.file.extensions.edit">
+        <counts>
+          <entry key="py" value="379" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.file.types.edit">
+        <counts>
+          <entry key="Python" value="379" />
+        </counts>
+      </usages-collector>
+    </session>
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/sds.py">
+        <entry file="file://$PROJECT_DIR$/inverted_index.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="136">
-              <caret line="8" column="7" selection-start-line="8" selection-start-column="7" selection-end-line="8" selection-end-column="7" />
+            <state relative-caret-position="459">
+              <caret line="177" column="13" lean-forward="true" selection-start-line="177" selection-start-column="13" selection-end-line="177" selection-end-column="13" />
               <folding>
-                <marker date="1617382003357" expanded="true" signature="84:86" ph="..." />
-                <marker date="1617382003357" expanded="true" signature="99:398" ph="..." />
-                <marker date="1617382003357" expanded="true" signature="411:416" ph="..." />
-                <marker date="1617382003357" expanded="true" signature="411:710" ph="..." />
-                <marker date="1617382003357" expanded="true" signature="725:772" ph="..." />
+                <element signature="e#0#11#0" expanded="true" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/bank_account.txt">
-          <provider selected="true" editor-type-id="text-editor">
-            <state>
-              <caret column="3" selection-start-column="3" selection-end-column="3" />
             </state>
           </provider>
         </entry>
@@ -125,9 +143,9 @@
     <option name="CHANGED_PATHS">
       <list>
         <option value="$PROJECT_DIR$/test_inverted_index.py" />
-        <option value="$PROJECT_DIR$/inverted_index.py" />
         <option value="$PROJECT_DIR$/bank_account.txt" />
         <option value="$PROJECT_DIR$/sds.py" />
+        <option value="$PROJECT_DIR$/inverted_index.py" />
       </list>
     </option>
   </component>
@@ -136,6 +154,23 @@
     <option name="y" value="-10" />
     <option name="width" value="1940" />
     <option name="height" value="1060" />
+  </component>
+  <component name="ProjectInspectionProfilesVisibleTreeState">
+    <entry key="Project Default">
+      <profile-state>
+        <expanded-state>
+          <State />
+          <State>
+            <id>Spelling</id>
+          </State>
+        </expanded-state>
+        <selected-state>
+          <State>
+            <id>SpellCheckingInspection</id>
+          </State>
+        </selected-state>
+      </profile-state>
+    </entry>
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
@@ -159,7 +194,7 @@
   </component>
   <component name="PropertiesComponent">
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
-    <property name="settings.editor.selected.configurable" value="editor.preferences.fonts.default" />
+    <property name="settings.editor.selected.configurable" value="Errors" />
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -349,13 +384,6 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/inverted.index" />
-    <entry file="file://$PROJECT_DIR$/inverted_index.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="229">
-          <caret line="65" column="60" selection-start-line="65" selection-start-column="60" selection-end-line="65" selection-end-column="60" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/test_inverted_index.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="17013">
@@ -363,24 +391,15 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/sds.py">
+    <entry file="file://$PROJECT_DIR$/sds.py" />
+    <entry file="file://$PROJECT_DIR$/bank_account.txt" />
+    <entry file="file://$PROJECT_DIR$/inverted_index.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="136">
-          <caret line="8" column="7" selection-start-line="8" selection-start-column="7" selection-end-line="8" selection-end-column="7" />
+        <state relative-caret-position="459">
+          <caret line="177" column="13" lean-forward="true" selection-start-line="177" selection-start-column="13" selection-end-line="177" selection-end-column="13" />
           <folding>
-            <marker date="1617382003357" expanded="true" signature="84:86" ph="..." />
-            <marker date="1617382003357" expanded="true" signature="99:398" ph="..." />
-            <marker date="1617382003357" expanded="true" signature="411:416" ph="..." />
-            <marker date="1617382003357" expanded="true" signature="411:710" ph="..." />
-            <marker date="1617382003357" expanded="true" signature="725:772" ph="..." />
+            <element signature="e#0#11#0" expanded="true" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/bank_account.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret column="3" selection-start-column="3" selection-end-column="3" />
         </state>
       </provider>
     </entry>
