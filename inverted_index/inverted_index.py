@@ -10,10 +10,23 @@ DEFAULT_LINK_WIKI_SAMPLE = r'..\Data\wikipedia_sample'
 DEFAULT_LINK_STOP_WORDS = r'..\Data\stop_words_en.txt'
 DEFAULT_LINK_INVERTED_INDEX = r'D:\Development\Coding\result-inverted-index\inverted.index'
 
+
 # work_links = {
 #     'link_wiki_sample': r'..\Data\wikipedia_sample',
 #     'link_stop_words': r'..\Data\stop_words_en.txt',
 #     'link_inverted_index': r'D:\Development\Coding\result-inverted-index\inverted.index'}
+
+class StoragePolicy:
+    def dump(self, word_to_docs_mapping, index_fio, ):
+        raise IndentationError
+
+    def load(self, index_dio):
+        raise IndentationError
+
+
+class JsonIndexPolicy(StoragePolicy):
+    def dump(self, word_to_docs_mapping, index_fio, ):
+        raise IndentationError
 
 
 class InvertedIndex:
@@ -26,17 +39,21 @@ class InvertedIndex:
         return {word: self.word_to_docs_mapping[word] if word in self.word_to_docs_mapping else {}
                 for word in words}
 
-    def dump(self, filepath: str):
-        # преобразую set в list для записи в json
+    def dump(self, filepath: str, storage_policy=None):
+        storage_policy = storage_policy or JsonIndexPolicy()
+        # Transforming set in list for write in json
         words_doc_ids = {
             word: list(ids) for word, ids in self.word_to_docs_mapping.items()}
         # проверка файла
+
         check_file = os.path.isfile(filepath)
+
+        # This is interface work with json file
         if check_file:
             with open(file=filepath, mode='r') as file:
                 words_with_file = json.load(fp=file)
         else:
-            words_with_file = dict()  # пустой словарь для файла которого нет
+            words_with_file = dict()  # пустой словарь для файла которого нет   ? find another solution!!!
 
         # update dict
         if set(words_doc_ids.keys()).isdisjoint(set(words_with_file.keys())):
@@ -48,7 +65,7 @@ class InvertedIndex:
                 words_with_file[key] += words_doc_ids[key]
             for key in keys_difference:
                 words_with_file[key] = words_doc_ids[key]
-        # запись в файл
+        # dumping in file
         with open(file=filepath, mode='w') as file:
             json.dump(words_with_file, file)
 
@@ -132,6 +149,7 @@ def set_parser(parser):
         default=False,
         help='Search for words in inverted index. This flag requires a positional argument',
     )
+
 
 def main():
     # Argument processing

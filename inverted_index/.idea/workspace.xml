@@ -2,9 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="77b3cfb5-79ee-4b48-969d-cd09fdb84a67" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/inverted_index.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inverted_index.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.coverage" beforeDir="false" afterPath="$PROJECT_DIR$/.coverage" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/inverted_index.py" beforeDir="false" afterPath="$PROJECT_DIR$/inverted_index.py" afterDir="false" />
     </list>
@@ -103,12 +101,12 @@
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
-          <entry key="py" value="379" />
+          <entry key="py" value="743" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="Python" value="379" />
+          <entry key="Python" value="743" />
         </counts>
       </usages-collector>
     </session>
@@ -118,10 +116,12 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/inverted_index.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="459">
-              <caret line="177" column="13" lean-forward="true" selection-start-line="177" selection-start-column="13" selection-end-line="177" selection-end-column="13" />
+            <state relative-caret-position="170">
+              <caret line="22" column="30" lean-forward="true" selection-start-line="22" selection-start-column="30" selection-end-line="22" selection-end-column="30" />
               <folding>
                 <element signature="e#0#11#0" expanded="true" />
+                <marker date="1617971077758" expanded="true" signature="581:586" ph="..." />
+                <marker date="1617971077758" expanded="true" signature="770:859" ph="..." />
               </folding>
             </state>
           </provider>
@@ -149,7 +149,7 @@
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds" extendedState="6">
+  <component name="ProjectFrameBounds" extendedState="7">
     <option name="x" value="-10" />
     <option name="y" value="-10" />
     <option name="width" value="1940" />
@@ -346,7 +346,7 @@
     <frame x="-7" y="-7" width="1550" height="848" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.10839392" />
+      <window_info content_ui="combo" id="Project" order="0" weight="0.10839392" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -395,10 +395,12 @@
     <entry file="file://$PROJECT_DIR$/bank_account.txt" />
     <entry file="file://$PROJECT_DIR$/inverted_index.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="459">
-          <caret line="177" column="13" lean-forward="true" selection-start-line="177" selection-start-column="13" selection-end-line="177" selection-end-column="13" />
+        <state relative-caret-position="170">
+          <caret line="22" column="30" lean-forward="true" selection-start-line="22" selection-start-column="30" selection-end-line="22" selection-end-column="30" />
           <folding>
             <element signature="e#0#11#0" expanded="true" />
+            <marker date="1617971077758" expanded="true" signature="581:586" ph="..." />
+            <marker date="1617971077758" expanded="true" signature="770:859" ph="..." />
           </folding>
         </state>
       </provider>
