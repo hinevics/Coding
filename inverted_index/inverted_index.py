@@ -75,6 +75,10 @@ class InvertedIndex:
         with open(file=filepath, mode='r', encoding='utf-8') as file:
             return InvertedIndex({index: set(words) for index, words in json.load(fp=file).items()})
 
+    @classmethod
+    def search_documents(cls, filpath: str):
+        raise IndentationError
+
 
 def load_documents(filepath: str):
     # выхов pdb
@@ -114,9 +118,24 @@ def build_inverted_index(indexs: list, words: list, stop_words: set) -> Inverted
     return InvertedIndex(inverted_index)
 
 
+def search_index_of_documents_by_words(requested_word, work_links):
+    # Search words in inverted index
+    if requested_word:
+        print("loading inverted index ...")
+        f_inverted_index = InvertedIndex.load(filepath=work_links['link_inverted_index'])
+        print('loading inverted index is complete')
+        print("search words ...")
+        return_id_docs_with_requested_words = f_inverted_index.query(requested_word)
+        print('Your query: {f1}'.format(f1=return_id_docs_with_requested_words))
+        return return_id_docs_with_requested_words
+    else:
+        print('Enter the words you want to find as arguments!',
+              f'Positional Argument requested_word={requested_word}')
+
+
 def set_parser(parser):
     # argument to set path dataset file
-    parser.add_argument('-d', "--dataset", default=DEFAULT_LINK_WIKI_SAMPLE,
+    parser.add_argument('-ds', "--dataset", default=DEFAULT_LINK_WIKI_SAMPLE,
                         help='This is a link to a file with documents'
                              'from which will be converted to an inverted index.',
                         type=str)
@@ -150,6 +169,14 @@ def set_parser(parser):
         help='Search for words in inverted index. This flag requires a positional argument',
     )
 
+    # flag for search of documents by index
+    parser.add_argument(
+        '-dc', '--documents',
+        action='store_true',
+        default=False,
+        help='Search of documents by index'
+    )
+
 
 def main():
     # Argument processing
@@ -160,9 +187,11 @@ def main():
     args = parser.parse_args()
     # search words
     requested_word = args.query
+
     # flags
     flag_c = args.creat
     flag_s = args.search
+    flag_d = args.documents
     # links derived from arguments
     work_links = {
         'link_wiki_sample': args.dataset,
@@ -186,16 +215,13 @@ def main():
         print(f'The inverted index is built.\nThe path to the file\n\t{work_links["link_inverted_index"]}')
     elif flag_s:
         # Search words in inverted index
-        if requested_word:
-            print("loading inverted index ...")
-            f_inverted_index = InvertedIndex.load(filepath=work_links['link_inverted_index'])
-            print('loading inverted index is complete')
-            print("search words ...")
-            return_id_docs_with_requested_words = f_inverted_index.query(requested_word)
-            print('Your query: {f1}'.format(f1=return_id_docs_with_requested_words))
-        else:
-            print('Enter the words you want to find as arguments!',
-                  f'Positional Argument requested_word={requested_word}')
+        search_index_of_documents_by_words(requested_word, work_links)
+    elif flag_d:
+        print('Слова:\t{f1}'.format(f1=requested_word))
+        print('Индексы: {f1}'.format(f1=search_index_of_documents_by_words(requested_word, work_links)))
+        # print('Here search documents by index!!!!. {arg1}'.format(arg1=search_index_doc if search_index_doc != None
+        #                                                           else 'Index None'))
+
     # indexs, words = load_documents(work_links['link_wiki_sample'])
     # stop_words = load_stop_words(work_links['link_stop_words'])
     # inverted_index1 = build_inverted_index(indexs=indexs, words=words, stop_words=stop_words)
