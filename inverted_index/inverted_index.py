@@ -1,6 +1,6 @@
 import json
 from re import sub
-import os.path
+import os
 import argparse
 import typing
 
@@ -9,6 +9,7 @@ import typing
 DEFAULT_LINK_WIKI_SAMPLE = r'..\Data\wikipedia_sample'
 DEFAULT_LINK_STOP_WORDS = r'..\Data\stop_words_en.txt'
 DEFAULT_LINK_INVERTED_INDEX = r'D:\Development\Coding\result-inverted-index\inverted.index'
+DEFAULT_LINK_REQUESTED_DOCUMENTS = r'D:\Development\Coding\result-inverted-index\requested_documents.txt'
 
 
 # work_links = {
@@ -81,13 +82,6 @@ class InvertedIndex:
 
 
 def load_documents(filepath: str):
-    # выхов pdb
-    # from pdb import set_trace
-    # set_trace()
-
-    # вызов ipython
-    # from IPython import embed
-    # embed()
     with open(file=filepath, encoding='utf-8') as file:
         documents = [i for i in sub(r'[\.\,\!\?]', '', file.read()).split('\n') if i != '']
     index, words = [], []
@@ -105,6 +99,45 @@ def load_stop_words(filepath: str):
     return result
 
 
+def create_index_document_pair(work_links):
+    with open(file=work_links['link_wiki_sample'], mode='r', encoding='utf-8') as file:
+        reading_file = {int(index): docs for index, docs in map(lambda x: x.split('\t', 1), file.readlines())}
+        return reading_file
+
+
+def squeak_of_documents_by_index(work_links, requested_word):
+    # work_links['link_search_doc']
+    print('.........LODING.........')
+    print('loading documents ...')
+    indexs, words = load_documents(work_links['link_wiki_sample'])
+    print('loading documents is complete')
+    print('loading stop words ...')
+    stop_words = load_stop_words(work_links['link_stop_words'])
+    print('loading stop words is complete')
+    print('start build inverted index ... ')
+    inverted_index1 = build_inverted_index(indexs=indexs, words=words, stop_words=stop_words)
+    print('build inverted index is complete')
+    print('.........SEARCH_INDEXS.........')
+    if requested_word:
+        search_index_doc = inverted_index1.query(requested_word).values()
+        search_index = set()
+        for ind in search_index_doc:
+            search_index.update(ind)
+        print('.........SAVE_DOCUMENTS.........')
+        with open(work_links['link_search_doc'], mode='w', encoding='utf-8') as file_write:
+            for ind in search_index:
+                file_write.write('{ind}\n'.format(ind=ind) + create_index_document_pair(work_links)[ind] + '\n')
+                print('save documents number {f1} ...'.format(f1=ind))
+        print('Open file ...')
+        os.system(r"Explorer.exe {f1}".format(f1=work_links["link_inverted_index"]))
+        print('.......Completion of work.......')
+
+    else:
+        print('Enter the words you want to find as arguments!',
+              f'Positional Argument requested_word={requested_word}.\n'
+              f'Pass an argument "-q"')
+
+
 def build_inverted_index(indexs: list, words: list, stop_words: set) -> InvertedIndex:
     inverted_index = dict()
     for word, index in zip(words, indexs):
@@ -120,6 +153,7 @@ def build_inverted_index(indexs: list, words: list, stop_words: set) -> Inverted
 
 def search_index_of_documents_by_words(requested_word, work_links):
     # Search words in inverted index
+    print('\n.......Search inverted index.......')
     if requested_word:
         print("loading inverted index ...")
         f_inverted_index = InvertedIndex.load(filepath=work_links['link_inverted_index'])
@@ -133,21 +167,51 @@ def search_index_of_documents_by_words(requested_word, work_links):
               f'Positional Argument requested_word={requested_word}')
 
 
+def creating_inverted_index(work_links, name_file_with_inverted_index):
+    # function to create an inverted index
+    print('loading documents ...')
+    indexs, words = load_documents(work_links['link_wiki_sample'])
+    print('loading documents is complete')
+    print('loading stop words ...')
+    stop_words = load_stop_words(work_links['link_stop_words'])
+    print('loading stop words is complete')
+    print('start build inverted index ... ')
+    inverted_index1 = build_inverted_index(indexs=indexs, words=words, stop_words=stop_words)
+    print('dump inverted index ... ')
+    inverted_index1.dump('{path}\{name}'.format(path=work_links['link_inverted_index'],
+                                                name=name_file_with_inverted_index))
+    print(f'The inverted index is built.\nThe path to the file\n{work_links["link_inverted_index"]}')
+    print('Open the folder with the file ...')
+    os.system(r"Explorer.exe {f1}".format(f1=work_links["link_inverted_index"]))
+    print('.......Completion of work.......')
+
+
 def set_parser(parser):
     # argument to set path dataset file
-    parser.add_argument('-ds', "--dataset", default=DEFAULT_LINK_WIKI_SAMPLE,
+    parser.add_argument('-pds', "--path_dataset", default=DEFAULT_LINK_WIKI_SAMPLE,
                         help='This is a link to a file with documents'
                              'from which will be converted to an inverted index.',
                         type=str)
     # required=True -- делает обязательным аргументом
 
     # argument to set path stop words file
-    parser.add_argument('-sw', "--stopwords", default=DEFAULT_LINK_STOP_WORDS,
+    parser.add_argument('-psw', "--path_stopwords", default=DEFAULT_LINK_STOP_WORDS,
                         help='This is a link to a file stop words.',
                         type=str)
     # argument to set the path for save inverted index file
-    parser.add_argument('-pathii', "--path_invertedindex", default=DEFAULT_LINK_INVERTED_INDEX,
+    parser.add_argument('-pii', "--path_invertedindex", default=DEFAULT_LINK_INVERTED_INDEX,
                         help='This is a link where the inverted index will be saved',
+                        type=str)
+
+    parser.add_argument(
+        '-n', '--name_result_file', default='inverted.index',
+        help='The name of the resulting file in which the inverted index will be saved', type=str
+    )
+
+    # Path to save a file with documents with words from the request
+    parser.add_argument('-psd', '--path_search_dociments',
+                        help='The path to the required documents',
+                        default=DEFAULT_LINK_REQUESTED_DOCUMENTS,
                         type=str)
 
     # argument to query for words
@@ -171,7 +235,7 @@ def set_parser(parser):
 
     # flag for search of documents by index
     parser.add_argument(
-        '-dc', '--documents',
+        '-d', '--documents',
         action='store_true',
         default=False,
         help='Search of documents by index'
@@ -188,40 +252,32 @@ def main():
     # search words
     requested_word = args.query
 
+    # name file with inverted index
+    name_file_with_inverted_index = args.name_result_file
+
     # flags
     flag_c = args.creat
     flag_s = args.search
     flag_d = args.documents
     # links derived from arguments
     work_links = {
-        'link_wiki_sample': args.dataset,
-        'link_stop_words': args.stopwords,
-        'link_inverted_index': args.path_invertedindex
+        'link_wiki_sample': args.path_dataset,
+        'link_stop_words': args.path_stopwords,
+        'link_inverted_index': args.path_invertedindex,
+        'link_search_doc': args.path_search_dociments
     }
 
     # creation script inverted index
     if flag_c:
         # Creat inverted index and save her in filt by path
-        print('loading documents ...')
-        indexs, words = load_documents(work_links['link_wiki_sample'])
-        print('loading documents is complete')
-        print('loading stop words ...')
-        stop_words = load_stop_words(work_links['link_stop_words'])
-        print('loading stop words is complete')
-        print('start build inverted index ... ')
-        inverted_index1 = build_inverted_index(indexs=indexs, words=words, stop_words=stop_words)
-        print('dump inverted index ... ')
-        inverted_index1.dump(work_links['link_inverted_index'])
-        print(f'The inverted index is built.\nThe path to the file\n\t{work_links["link_inverted_index"]}')
+        creating_inverted_index(work_links=work_links, name_file_with_inverted_index=name_file_with_inverted_index)
     elif flag_s:
         # Search words in inverted index
         search_index_of_documents_by_words(requested_word, work_links)
     elif flag_d:
-        print('Слова:\t{f1}'.format(f1=requested_word))
-        print('Индексы: {f1}'.format(f1=search_index_of_documents_by_words(requested_word, work_links)))
-        # print('Here search documents by index!!!!. {arg1}'.format(arg1=search_index_doc if search_index_doc != None
-        #                                                           else 'Index None'))
-
+        # An inverted index is created from the set of documents. This inverted index looks for certain words,
+        # and then the indexes corresponding to those words.A set of texts is collected for these indices and saved.
+        squeak_of_documents_by_index(work_links=work_links, requested_word=requested_word)
     # indexs, words = load_documents(work_links['link_wiki_sample'])
     # stop_words = load_stop_words(work_links['link_stop_words'])
     # inverted_index1 = build_inverted_index(indexs=indexs, words=words, stop_words=stop_words)
