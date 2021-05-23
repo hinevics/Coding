@@ -1,3 +1,8 @@
+"""
+Важыне заметки!
+1. нужно продумать то, что файл буте открываться и считываться в разных функциях.
+Поскльку мне нужен доступ к файлу и тут возникате проблема
+"""
 import json
 from re import sub
 import os
@@ -11,9 +16,10 @@ DEFAULT_LINK_STOP_WORDS = r'..\Data\stop_words_en.txt'
 DEFAULT_LINK_INVERTED_INDEX = r'D:\Development\Coding\result-inverted-index'
 DEFAULT_LINK_REQUESTED_DOCUMENTS = r'D:\Development\Coding\result-inverted-index'
 DEFAULT_NAME_FILE_INVERTED_INDEX = r'inverted.index'
-DEFAULT_NAME_FILE_DOCUMENTS = r'documents'
+DEFAULT_NAME_FILE_DOCUMENTS = r'documents.txt'
 
 
+# ... = r'D:\Development\Coding\InvertedIndex\inverted_index\'
 # work_links = {
 #     'link_wiki_sample': r'..\Data\wikipedia_sample',
 #     'link_stop_words': r'..\Data\stop_words_en.txt',
@@ -39,8 +45,14 @@ class InvertedIndex:
             word: doc_ids for word, doc_ids in word_to_docs_mapping.items()}
 
     def query(self, words):
-        return {word: self.word_to_docs_mapping[word] if word in self.word_to_docs_mapping else {}
-                for word in words}
+        result_query = set(
+            self.word_to_docs_mapping.setdefault(words[0], [])
+        )
+        for word in words[1:]:
+            result_query.intersection(set(
+                self.word_to_docs_mapping.setdefault(word, [])
+            ))
+        return result_query
 
     def dump(self, filepath: str, storage_policy=None):
         storage_policy = storage_policy or JsonIndexPolicy()
@@ -74,7 +86,7 @@ class InvertedIndex:
 
     @classmethod
     def load(cls, filepath: str):
-        # считывем с диска
+        # read from disk
         with open(file=filepath, mode='r', encoding='utf-8') as file:
             return InvertedIndex({index: set(words) for index, words in json.load(fp=file).items()})
 
@@ -83,7 +95,22 @@ class InvertedIndex:
         raise IndentationError
 
 
+def word_frequency():
+    # Функция поиска частоты слов
+    raise IndentationError
+
+
+def open_documents(filepath: str):
+    # Выделяет индекс и сами документа
+    raise IndentationError
+
+
 def load_documents(filepath: str):
+    """
+    Функци для получения пар индес-слова
+    :param filepath: path to document
+    :return:
+    """
     with open(file=filepath, encoding='utf-8') as file:
         documents = [i for i in sub(r'[\.\,\!\?]', '', file.read()).split('\n') if i != '']
     index, words = [], []
@@ -120,32 +147,36 @@ def create_index_document_pair(work_links):
         return reading_file
 
 
-def squeak_of_documents_by_index(work_links, requested_word, name_file_with_result_search_documents):
+def squeak_of_documents_by_index(work_links, requested_word):
     # work_links['link_search_doc']
-    print('.........LODING.........')
-    print('loading documents ...')
-    indexs, words = load_documents(work_links['link_wiki_sample'])
-    print('loading documents is complete')
-    print('loading stop words ...')
-    stop_words = load_stop_words(work_links['link_stop_words'])
-    print('loading stop words is complete')
-    print('start build inverted index ... ')
-    inverted_index1 = build_inverted_index(indexs=indexs, words=words, stop_words=stop_words)
-    print('build inverted index is complete')
-    print('.........SEARCH_INDEXS.........')
     if requested_word:
-        search_index_doc = inverted_index1.query(requested_word).values()
-        search_index = set()
-        for ind in search_index_doc:
-            search_index.update(ind)
+        print('.........LODING.........')
+        print('Documents path: {path}'.format(path=repr(work_links['link_wiki_sample'])))
+        print('loading documents ...')
+        indexs, words = load_documents(work_links['link_wiki_sample'])
+        print('loading documents is complete')
+        print('Stop words path: {path}'.format(path=repr(work_links['link_stop_words'])))
+        print('loading stop words ...')
+        stop_words = load_stop_words(work_links['link_stop_words'])
+        print('loading stop words is complete')
+        print('start build inverted index ... ')
+        inverted_index1 = build_inverted_index(indexs=indexs, words=words, stop_words=stop_words)
+        print('build inverted index is complete')
+        print('.........SEARCH_INDEXS.........')
+        search_index = inverted_index1.query(requested_word)
+
+        # search_index = set()
+        # for ind in search_index_doc:
+        #     search_index.update(ind)
         print('.........SAVE_DOCUMENTS.........')
-        with open(file=work_links['link_search_doc'] + name_file_with_result_search_documents,
+        print('Save documents path: {path}'.format(path=work_links['link_search_doc']))
+        with open(file=work_links['link_search_doc'],
                   mode='w', encoding='utf-8') as file_write:
             for ind in search_index:
                 file_write.write('{ind}\t'.format(ind=ind) + create_index_document_pair(work_links)[ind])
                 print('save documents number {f1} ...'.format(f1=ind))
         print('Open file ...')
-        os.system(r"Explorer.exe {f1}".format(f1=work_links["link_inverted_index"]))
+        os.system(r"Explorer.exe {f1}".format(f1=work_links["link_search_doc"]))
         print('.......Completion of work.......')
 
     else:
@@ -159,6 +190,7 @@ def search_index_of_documents_by_words(requested_word, work_links):
     print('\n.......Search inverted index.......')
     if requested_word:
         print("loading inverted index ...")
+        print('Inverted index path: {path}'.format(path=repr(work_links['link_inverted_index'])))
         f_inverted_index = InvertedIndex.load(filepath=work_links['link_inverted_index'])
         print('loading inverted index is complete')
         print("search words ...")
@@ -219,7 +251,7 @@ def set_parser(parser):
                         type=str, default=DEFAULT_NAME_FILE_DOCUMENTS)
 
     # Path to save a file with documents with words from the request
-    parser.add_argument('-psd', '--path_search_dociments',
+    parser.add_argument('-psd', '--path_search_documents',
                         help='The path to the required documents',
                         default=DEFAULT_LINK_REQUESTED_DOCUMENTS,
                         type=str)
@@ -274,8 +306,10 @@ def main():
     work_links = {
         'link_wiki_sample': args.path_dataset,
         'link_stop_words': args.path_stopwords,
-        'link_inverted_index': args.path_invertedindex,
-        'link_search_doc': args.path_search_dociments
+        'link_inverted_index': '{path}\{name}'.format(path=args.path_invertedindex,
+                                                      name=name_file_with_inverted_index),
+        'link_search_doc': '{path}\{name}'.format(path=args.path_search_documents,
+                                                  name=name_file_with_result_search_documents)
     }
 
     # creation script inverted index
@@ -288,8 +322,7 @@ def main():
     elif flag_d:
         # An inverted index is created from the set of documents. This inverted index looks for certain words,
         # and then the indexes corresponding to those words.A set of texts is collected for these indices and saved.
-        squeak_of_documents_by_index(work_links=work_links, requested_word=requested_word,
-                                     name_file_with_result_search_documents=name_file_with_result_search_documents)
+        squeak_of_documents_by_index(work_links=work_links, requested_word=requested_word)
 
 
 if __name__ == "__main__":
