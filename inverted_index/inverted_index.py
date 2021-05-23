@@ -1,7 +1,8 @@
 """
 Важыне заметки!
-1. нужно продумать то, что файл буте открываться и считываться в разных функциях.
-Поскльку мне нужен доступ к файлу и тут возникате проблема
+1. Сделать считываение файла с документами единижды.
+2. Прорабоатть указания путей и имен в функция
+3. построить созависимые аргументы
 """
 import json
 from re import sub
@@ -19,12 +20,6 @@ DEFAULT_NAME_FILE_INVERTED_INDEX = r'inverted.index'
 DEFAULT_NAME_FILE_DOCUMENTS = r'documents.txt'
 
 
-# ... = r'D:\Development\Coding\InvertedIndex\inverted_index\'
-# work_links = {
-#     'link_wiki_sample': r'..\Data\wikipedia_sample',
-#     'link_stop_words': r'..\Data\stop_words_en.txt',
-#     'link_inverted_index': r'D:\Development\Coding\result-inverted-index\inverted.index'}
-
 class StoragePolicy:
     def dump(self, word_to_docs_mapping, index_fio, ):
         raise IndentationError
@@ -34,9 +29,11 @@ class StoragePolicy:
 
 
 class JsonIndexPolicy(StoragePolicy):
-    def dump(self, word_to_docs_mapping, index_fio, ):
-        raise IndentationError
-
+    def dump(self, word_to_docs_mapping, index_fio):
+        words_doc_ids = {
+            word: list(ids) for word, ids in word_to_docs_mapping.items()}
+        dump = json.dumps(word_to_docs_mapping)
+        index_fio.write(dump)
 
 class InvertedIndex:
     def __init__(self, word_to_docs_mapping: dict):
@@ -56,36 +53,54 @@ class InvertedIndex:
 
     def dump(self, filepath: str, storage_policy=None):
         storage_policy = storage_policy or JsonIndexPolicy()
-        # Transforming set in list for write in json
+
         words_doc_ids = {
             word: list(ids) for word, ids in self.word_to_docs_mapping.items()}
-        # проверка файла
 
+        # dumping in file
+        with open(file=filepath, mode='w') as file:
+            storage_policy.dump(words_doc_ids, file)
+
+    def rewriting(self, filepath: str):
+        """
+        overwrite existing inverted index
+        :param filepath: path to file
+        """
+
+        words_doc_ids = {
+            word: list(ids) for word, ids in self.word_to_docs_mapping.items()}
+
+        # Checking for the existence of a file
         check_file = os.path.isfile(filepath)
 
-        # This is interface work with json file
+        # This is interface work with  file
         if check_file:
+            # If the file is
             with open(file=filepath, mode='r') as file:
                 words_with_file = json.load(fp=file)
         else:
-            words_with_file = dict()  # пустой словарь для файла которого нет   ? find another solution!!!
+            # an empty dictionary for a file that does not exist
+            words_with_file = dict()
 
         # update dict
         if set(words_doc_ids.keys()).isdisjoint(set(words_with_file.keys())):
             words_with_file.update(words_doc_ids)
         else:
+            # update words
             keys_intersection = set(words_doc_ids.keys()) & set(words_with_file.keys())
             keys_difference = set()
             for key in keys_intersection:
                 words_with_file[key] += words_doc_ids[key]
             for key in keys_difference:
                 words_with_file[key] = words_doc_ids[key]
-        # dumping in file
+
+        # rewriting file
         with open(file=filepath, mode='w') as file:
             json.dump(words_with_file, file)
 
     @classmethod
-    def load(cls, filepath: str):
+    def load(cls, filepath: str, storage_policy=None):
+        storage_policy = storage_policy or JsonIndexPolicy()
         # read from disk
         with open(file=filepath, mode='r', encoding='utf-8') as file:
             return InvertedIndex({index: set(words) for index, words in json.load(fp=file).items()})
@@ -147,7 +162,7 @@ def create_index_document_pair(work_links):
         return reading_file
 
 
-def squeak_of_documents_by_index(work_links, requested_word):
+def squeak_of_documents_by_index(work_links, requested_word, namefile):
     # work_links['link_search_doc']
     if requested_word:
         print('.........LODING.........')
@@ -203,7 +218,7 @@ def search_index_of_documents_by_words(requested_word, work_links):
               f'Pass an argument "-q"')
 
 
-def creating_inverted_index(work_links, name_file_with_inverted_index):
+def creating_inverted_index(work_links):
     # function to create an inverted index
     print('loading documents ...')
     indexs, words = load_documents(work_links['link_wiki_sample'])
@@ -214,8 +229,7 @@ def creating_inverted_index(work_links, name_file_with_inverted_index):
     print('start build inverted index ... ')
     inverted_index1 = build_inverted_index(indexs=indexs, words=words, stop_words=stop_words)
     print('dump inverted index ... ')
-    inverted_index1.dump('{path}\{name}'.format(path=work_links['link_inverted_index'],
-                                                name=name_file_with_inverted_index))
+    inverted_index1.dump('{path}'.format(path=work_links['link_inverted_index']))
     print(f'The inverted index is built.\nThe path to the file\n{work_links["link_inverted_index"]}')
     print('Open the folder with the file ...')
     os.system(r"Explorer.exe {f1}".format(f1=work_links["link_inverted_index"]))
@@ -295,8 +309,8 @@ def main():
     requested_word = args.query
 
     # name file with inverted index
-    name_file_with_inverted_index = args.name_file_inverted_index
-    name_file_with_result_search_documents = args.name_file_search_documents
+    name_file_inverted_index = args.name_file_inverted_index
+    name_file_result_search_documents = args.name_file_search_documents
 
     # flags
     flag_c = args.creat
@@ -306,23 +320,22 @@ def main():
     work_links = {
         'link_wiki_sample': args.path_dataset,
         'link_stop_words': args.path_stopwords,
-        'link_inverted_index': '{path}\{name}'.format(path=args.path_invertedindex,
-                                                      name=name_file_with_inverted_index),
-        'link_search_doc': '{path}\{name}'.format(path=args.path_search_documents,
-                                                  name=name_file_with_result_search_documents)
+        'link_inverted_index': args.path_invertedindex,
+        'link_search_doc': args.path_search_documents
     }
 
     # creation script inverted index
     if flag_c:
         # Creat inverted index and save her in filt by path
-        creating_inverted_index(work_links=work_links, name_file_with_inverted_index=name_file_with_inverted_index)
+        creating_inverted_index(work_links=work_links, namefile=name_file_inverted_index)
     elif flag_s:
         # Search words in inverted index
-        search_index_of_documents_by_words(requested_word, work_links)
+        search_index_of_documents_by_words(requested_word, work_links, namefile=name_file_inverted_index)
     elif flag_d:
         # An inverted index is created from the set of documents. This inverted index looks for certain words,
         # and then the indexes corresponding to those words.A set of texts is collected for these indices and saved.
-        squeak_of_documents_by_index(work_links=work_links, requested_word=requested_word)
+        squeak_of_documents_by_index(work_links=work_links,
+                                     requested_word=requested_word, namefile=name_file_result_search_documents)
 
 
 if __name__ == "__main__":
