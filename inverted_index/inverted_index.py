@@ -1,9 +1,3 @@
-"""
-Важыне заметки!
-1. Сделать считываение файла с документами единижды.
-2. Прорабоатть указания путей и имен в функция
-3. построить созависимые аргументы
-"""
 import json
 from re import sub
 import os
@@ -34,6 +28,7 @@ class JsonIndexPolicy(StoragePolicy):
             word: list(ids) for word, ids in word_to_docs_mapping.items()}
         dump = json.dumps(word_to_docs_mapping)
         index_fio.write(dump)
+
 
 class InvertedIndex:
     def __init__(self, word_to_docs_mapping: dict):
@@ -162,11 +157,9 @@ def create_index_document_pair(work_links):
         return reading_file
 
 
-def squeak_of_documents_by_index(work_links, requested_word, name):
+def squeak_of_documents_by_index(work_links, requested_word, name, flag_open):
     full_name_path_save_doc = '{path}/{name}'.format(path=work_links['link_search_doc'],
-                                            name=name)
-
-
+                                                     name=name)
     if requested_word:
         print('.........LODING.........')
         print('Documents path: {path}'.format(path=repr(work_links['link_wiki_sample'])))
@@ -182,10 +175,6 @@ def squeak_of_documents_by_index(work_links, requested_word, name):
         print('build inverted index is complete')
         print('.........SEARCH_INDEXS.........')
         search_index = inverted_index1.query(requested_word)
-
-        # search_index = set()
-        # for ind in search_index_doc:
-        #     search_index.update(ind)
         print('.........SAVE_DOCUMENTS.........')
         print('Save documents path: {fullpath}'.format(fullpath=full_name_path_save_doc))
         with open(file=full_name_path_save_doc,
@@ -193,9 +182,10 @@ def squeak_of_documents_by_index(work_links, requested_word, name):
             for ind in search_index:
                 file_write.write('{ind}\t'.format(ind=ind) + create_index_document_pair(work_links)[ind])
                 print('save documents number {f1} ...'.format(f1=ind))
-        print('Open file ...')
-        os.system(r"Explorer.exe {f1}".format(f1=work_links["link_search_doc"]))
-        print('.......Completion of work.......')
+        if flag_open:
+            print('Open file ...')
+            os.system(r"Explorer.exe {f1}".format(f1=work_links["link_search_doc"]))
+            print('.......Completion of work.......')
 
     else:
         print('Enter the words you want to find as arguments!',
@@ -225,7 +215,7 @@ def search_index_of_documents_by_words(requested_word, work_links, name):
               f'Pass an argument "-q"')
 
 
-def creating_inverted_index(work_links, name):
+def creating_inverted_index(work_links, name, flag_open):
     # function to create an inverted index
 
     full_name_inverted_index = '{path}/{name}'.format(path=work_links['link_inverted_index'],
@@ -243,13 +233,13 @@ def creating_inverted_index(work_links, name):
     inverted_index1.dump(filepath=full_name_inverted_index)
     print(f'The inverted index is built.\n'
           f'The path to the file\n{full_name_inverted_index}')
-    print('Open the folder with the file ...')
-    os.system(r"Explorer.exe {f1}".format(f1=work_links["link_inverted_index"]))
+    if flag_open:
+        print('Open the folder with the file ...')
+        os.system(r"Explorer.exe {f1}".format(f1=work_links["link_inverted_index"]))
     print('.......Completion of work.......')
 
 
 def set_parser(parser):
-
     # PATH
 
     # argument to set path dataset file
@@ -315,6 +305,19 @@ def set_parser(parser):
         help='Search of documents by index'
     )
 
+    # flog for open path with result
+    parser.add_argument(
+        '-o', '--open',
+        action='store_true',
+        default=False,
+        help='This is a flag for sending the command to open the folder with the result'
+    )
+    """
+    Реадизовать субпарсеры!!!!!!!!!!!!!!!!!!!!!!!!
+    """
+    subparsers = parser.add_subparsers(help='choose command to run')
+    t = subparsers.add_parser('-t', '--test-subparsers', help='Test subparsers')
+    tt = subparsers.add_parser('-tt', '--two-test', help='Two test subparses')
 
 def main():
     # Argument processing
@@ -334,6 +337,7 @@ def main():
     flag_c = args.creat
     flag_s = args.search
     flag_d = args.documents
+    flag_open = args.open
     # links derived from arguments
     work_links = {
         'link_wiki_sample': args.path_dataset,
@@ -345,7 +349,7 @@ def main():
     # creation script inverted index
     if flag_c:
         # Creat inverted index and save her in filt by path
-        creating_inverted_index(work_links=work_links, name=name_file_inverted_index)
+        creating_inverted_index(work_links=work_links, name=name_file_inverted_index, flag_open=flag_open)
     elif flag_s:
         # Search words in inverted index
         search_index_of_documents_by_words(requested_word, work_links, name=name_file_inverted_index)
@@ -353,7 +357,9 @@ def main():
         # An inverted index is created from the set of documents. This inverted index looks for certain words,
         # and then the indexes corresponding to those words.A set of texts is collected for these indices and saved.
         squeak_of_documents_by_index(work_links=work_links,
-                                     requested_word=requested_word, name=name_file_result_search_documents)
+                                     requested_word=requested_word,
+                                     name=name_file_result_search_documents,
+                                     flag_open=flag_open)
 
 
 if __name__ == "__main__":
