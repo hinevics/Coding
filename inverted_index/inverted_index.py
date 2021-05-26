@@ -162,8 +162,11 @@ def create_index_document_pair(work_links):
         return reading_file
 
 
-def squeak_of_documents_by_index(work_links, requested_word, namefile):
-    # work_links['link_search_doc']
+def squeak_of_documents_by_index(work_links, requested_word, name):
+    full_name_path_save_doc = '{path}/{name}'.format(path=work_links['link_search_doc'],
+                                            name=name)
+
+
     if requested_word:
         print('.........LODING.........')
         print('Documents path: {path}'.format(path=repr(work_links['link_wiki_sample'])))
@@ -184,8 +187,8 @@ def squeak_of_documents_by_index(work_links, requested_word, namefile):
         # for ind in search_index_doc:
         #     search_index.update(ind)
         print('.........SAVE_DOCUMENTS.........')
-        print('Save documents path: {path}'.format(path=work_links['link_search_doc']))
-        with open(file=work_links['link_search_doc'],
+        print('Save documents path: {fullpath}'.format(fullpath=full_name_path_save_doc))
+        with open(file=full_name_path_save_doc,
                   mode='w', encoding='utf-8') as file_write:
             for ind in search_index:
                 file_write.write('{ind}\t'.format(ind=ind) + create_index_document_pair(work_links)[ind])
@@ -200,13 +203,17 @@ def squeak_of_documents_by_index(work_links, requested_word, namefile):
               f'Pass an argument "-q"')
 
 
-def search_index_of_documents_by_words(requested_word, work_links):
+def search_index_of_documents_by_words(requested_word, work_links, name):
     # Search words in inverted index
+    full_path_inverted_index = '{path}/{name}'.format(
+        path=work_links['link_inverted_index'],
+        name=name
+    )
     print('\n.......Search inverted index.......')
     if requested_word:
         print("loading inverted index ...")
-        print('Inverted index path: {path}'.format(path=repr(work_links['link_inverted_index'])))
-        f_inverted_index = InvertedIndex.load(filepath=work_links['link_inverted_index'])
+        print('Inverted index path: {fullname}'.format(fullname=full_path_inverted_index))
+        f_inverted_index = InvertedIndex.load(filepath=full_path_inverted_index)
         print('loading inverted index is complete')
         print("search words ...")
         return_id_docs_with_requested_words = f_inverted_index.query(requested_word)
@@ -218,8 +225,12 @@ def search_index_of_documents_by_words(requested_word, work_links):
               f'Pass an argument "-q"')
 
 
-def creating_inverted_index(work_links):
+def creating_inverted_index(work_links, name):
     # function to create an inverted index
+
+    full_name_inverted_index = '{path}/{name}'.format(path=work_links['link_inverted_index'],
+                                                      name=name)
+
     print('loading documents ...')
     indexs, words = load_documents(work_links['link_wiki_sample'])
     print('loading documents is complete')
@@ -229,14 +240,18 @@ def creating_inverted_index(work_links):
     print('start build inverted index ... ')
     inverted_index1 = build_inverted_index(indexs=indexs, words=words, stop_words=stop_words)
     print('dump inverted index ... ')
-    inverted_index1.dump('{path}'.format(path=work_links['link_inverted_index']))
-    print(f'The inverted index is built.\nThe path to the file\n{work_links["link_inverted_index"]}')
+    inverted_index1.dump(filepath=full_name_inverted_index)
+    print(f'The inverted index is built.\n'
+          f'The path to the file\n{full_name_inverted_index}')
     print('Open the folder with the file ...')
     os.system(r"Explorer.exe {f1}".format(f1=work_links["link_inverted_index"]))
     print('.......Completion of work.......')
 
 
 def set_parser(parser):
+
+    # PATH
+
     # argument to set path dataset file
     parser.add_argument('-pds', "--path_dataset", default=DEFAULT_LINK_WIKI_SAMPLE,
                         help='This is a link to a file with documents'
@@ -252,6 +267,13 @@ def set_parser(parser):
     parser.add_argument('-pii', "--path_invertedindex", default=DEFAULT_LINK_INVERTED_INDEX,
                         help='This is a link where the inverted index will be saved',
                         type=str)
+    # Path to save a file with documents with words from the request
+    parser.add_argument('-psd', '--path_search_documents',
+                        help='The path to the required documents',
+                        default=DEFAULT_LINK_REQUESTED_DOCUMENTS,
+                        type=str)
+
+    # NAME FILE
 
     # arguments with the name of the inverted index file
     parser.add_argument(
@@ -264,15 +286,11 @@ def set_parser(parser):
                         help='This arguments with name of file with search documents',
                         type=str, default=DEFAULT_NAME_FILE_DOCUMENTS)
 
-    # Path to save a file with documents with words from the request
-    parser.add_argument('-psd', '--path_search_documents',
-                        help='The path to the required documents',
-                        default=DEFAULT_LINK_REQUESTED_DOCUMENTS,
-                        type=str)
-
     # argument to query for words
     parser.add_argument('-q', '--query', help='Words that will determine the indices of the files where it occurs',
                         type=str, nargs='*', default=None)
+
+    # FLAG
 
     # flag for creat inverted index
     parser.add_argument(
@@ -327,15 +345,15 @@ def main():
     # creation script inverted index
     if flag_c:
         # Creat inverted index and save her in filt by path
-        creating_inverted_index(work_links=work_links, namefile=name_file_inverted_index)
+        creating_inverted_index(work_links=work_links, name=name_file_inverted_index)
     elif flag_s:
         # Search words in inverted index
-        search_index_of_documents_by_words(requested_word, work_links, namefile=name_file_inverted_index)
+        search_index_of_documents_by_words(requested_word, work_links, name=name_file_inverted_index)
     elif flag_d:
         # An inverted index is created from the set of documents. This inverted index looks for certain words,
         # and then the indexes corresponding to those words.A set of texts is collected for these indices and saved.
         squeak_of_documents_by_index(work_links=work_links,
-                                     requested_word=requested_word, namefile=name_file_result_search_documents)
+                                     requested_word=requested_word, name=name_file_result_search_documents)
 
 
 if __name__ == "__main__":
