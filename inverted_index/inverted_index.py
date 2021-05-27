@@ -330,53 +330,6 @@ def set_parser(parser):
                                help='Words that will determine the indices of the files where it occurs',
                                type=str, nargs='*', default=None)
     search_parser.set_defaults(callback=processing_search)
-    # Path to save a file with documents with words from the request
-    # parser.add_argument('-psd', '--path_search_documents',
-    #                     help='The path to the required documents',
-    #                     default=DEFAULT_LINK_REQUESTED_DOCUMENTS,
-    #                     type=str)
-    #
-    # # argument with the name of the document storage file
-    # parser.add_argument('-nd', '--name_file_search_documents',
-    #                     help='This arguments with name of file with search documents',
-    #                     type=str, default=DEFAULT_NAME_FILE_DOCUMENTS)
-    #
-    # # argument to query for words
-    # parser.add_argument('-q', '--query', help='Words that will determine the indices of the files where it occurs',
-    #                     type=str, nargs='*', default=None)
-    #
-    # # FLAG
-    #
-    # # flag for creat inverted index
-    # parser.add_argument(
-    #     '-c', '--creatt',
-    #     action='store_true',
-    #     default=False,
-    #     help='Create an inverted index file')
-    #
-    # # flag for search words in inverted index
-    # parser.add_argument(
-    #     '-s', '--search',
-    #     action='store_true',
-    #     default=False,
-    #     help='Search for words in inverted index. This flag requires a positional argument',
-    # )
-    #
-    # # flag for search of documents by index
-    # parser.add_argument(
-    #     '-d', '--documents',
-    #     action='store_true',
-    #     default=False,
-    #     help='Search of documents by index'
-    # )
-    #
-    # # flog for open path with result
-    # parser.add_argument(
-    #     '-o', '--open',
-    #     action='store_true',
-    #     default=False,
-    #     help='This is a flag for sending the command to open the folder with the result'
-    # )
 
 
 def main():
@@ -387,40 +340,6 @@ def main():
     set_parser(parser)
     args = parser.parse_args()
     args.callback(args)  # callback for branches
-    # # search words
-    # requested_word = args.query
-    #
-    # # name file with inverted index
-    # name_file_inverted_index = args.name_file_inverted_index
-    # name_file_result_search_documents = args.name_file_search_documents
-    #
-    # # flags
-    # flag_c = args.creatt
-    # flag_s = args.search
-    # flag_d = args.documents
-    # flag_open = args.open
-    # # links derived from arguments
-    # work_links = {
-    #     'link_wiki_sample': args.path_dataset,
-    #     'link_stop_words': args.path_stopwords,
-    #     'link_inverted_index': args.path_invertedindex,
-    #     'link_search_doc': args.path_search_documents
-    # }
-    #
-    # # creation script inverted index
-    # if flag_c:
-    #     # Creat inverted index and save her in filt by path
-    #     creating_inverted_index(work_links=work_links, name=name_file_inverted_index, flag_open=flag_open)
-    # elif flag_s:
-    #     # Search words in inverted index
-    #     search_index_of_documents_by_words(requested_word, work_links, name=name_file_inverted_index)
-    # elif flag_d:
-    #     # An inverted index is created from the set of documents. This inverted index looks for certain words,
-    #     # and then the indexes corresponding to those words.A set of texts is collected for these indices and saved.
-    #     squeak_of_documents_by_index(work_links=work_links,
-    #                                  requested_word=requested_word,
-    #                                  name=name_file_result_search_documents,
-    #                                  flag_open=flag_open)
 
 
 if __name__ == "__main__":
